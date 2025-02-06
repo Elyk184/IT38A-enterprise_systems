@@ -50,11 +50,11 @@ body {
 
 /* Main Content */
 .content {
-    margin-left: 270px;
+    margin-left: 800px;
     padding: 20px;
     flex-grow: 1;
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 45px;
 }
