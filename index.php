@@ -34,7 +34,6 @@
         <!-- Main Content -->
         <div class="content">
             <h1>Welcome to Dashboard</h1>
-
         </div>
     </div>
 </body>
