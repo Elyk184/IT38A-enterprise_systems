@@ -18,6 +18,7 @@
                     <a href="#">News</a>
                     <ul class="submenu">
                         <li><a href="#">No impeachment trial vs VP Duterte during break of Congress - Escudero</a></li>
+                        <li><a href="#">Australia, Japan, Philippines, and United States Conduct Multilateral Maritime Cooperative Activity</a></li> 
                     </ul>
                 </li>
                 <li class="dropdown">
