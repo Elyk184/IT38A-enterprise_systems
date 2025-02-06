@@ -13,8 +13,13 @@
         <nav class="sidebar">
             <h2>Dashboard</h2>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">News</a></li>
+                <li><a href="#">Home</a></li>   
+                <li class="dropdown">
+                    <a href="#">News</a>
+                    <ul class="submenu">
+                        <li><a href="#">No impeachment trial vs VP Duterte during break of Congress - Escudero</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#">Accounts</a>
                     <ul class="submenu">
