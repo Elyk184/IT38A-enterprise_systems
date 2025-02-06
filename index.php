@@ -13,7 +13,8 @@
         <nav class="sidebar">
             <h2>Dashboard</h2>
             <ul>
-                <li><a href="#">Reports</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">News</a></li>
                 <li class="dropdown">
                     <a href="#">Accounts</a>
                     <ul class="submenu">
@@ -28,7 +29,7 @@
         <!-- Main Content -->
         <div class="content">
             <h1>Welcome to Dashboard</h1>
-            <p>Select an option from the sidebar to view reports or manage accounts.</p>
+
         </div>
     </div>
 </body>
