@@ -35,3 +35,23 @@ aiming for better efficiency and integration.
 c.2. Implementation Process & Challenges
 Hershey’s attempted a “big bang” approach, launching SAP’s ERP system along with CRM and supply chain management (SCM) software simultaneously.
 However, the project faced major challenges, including an overly ambitious timeline, insufficient user training, and inadequate system testing before deployment.
+c.3. Key Failure Factors
+•Unrealistic Timeline
+- The system was rushed to go live before the holiday season, leading to operational bottlenecks.
+•Poor Change Management
+- Employees were not adequately trained on the new system.
+•Lack of Sufficient Testing
+- Critical bugs were not identified before deployment.
+•Overly Complex Implementation
+- Too many systems were integrated at once, increasing risk.
+c.4. Outcomes & Consequences
+•Massive delays in order fulfillment, resulting in a $100 million revenue loss.
+•Stock shortages and customer dissatisfaction.
+•Brand reputation damage and loss of market trust.
+•Need for extensive corrective actions, adding more costs.
+
+Comparative Analysis
+d.1. Similarities & Differences
+•Both companies aimed to enhance operations through enterprise system implementation.
+•Cisco followed a gradual, well-structured approach, whereas Hershey’s rushed the process.
+•Cisco prioritized training and change management, while Hershey’s overlooked them.
