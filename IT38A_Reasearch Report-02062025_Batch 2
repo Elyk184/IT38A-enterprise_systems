@@ -3,6 +3,35 @@ Comparative Analysis of Successful and Failed Enterprise System Implementations
 Case Study 1: Successful Enterprise System Implementation
 b.1. Company Overview
 Company Name: Cisco Systems
-Reason for Implementation: Cisco needed an enterprise resource planning (ERP) system to support its rapid growth, streamline operations, and replace its outdated legacy systems, which could no longer handle increasing transaction volumes.
+Reason for Implementation
+- Cisco needed an enterprise resource planning (ERP) system to support its rapid growth,
+streamline operations, and replace its outdated legacy systems, which could no longer handle increasing transaction volumes.
 b.2. Implementation Process
-Cisco partnered with Oracle to deploy a new ERP system in just nine months, following a well-structured and phased implementation approach. The company invested heavily in training and change management, ensuring employee buy-in and seamless integration with existing processes.
+- Cisco partnered with Oracle to deploy a new ERP system in just nine months, following a well-structured and phased implementation approach.
+The company invested heavily in training and change management, ensuring employee buy-in and seamless integration with existing processes.
+b.3. Key Success Factors
+• Strong Executive Support
+- Cisco’s top management actively supported the project.
+• Clear Business Objectives
+- The ERP system aligned with Cisco’s need for scalable operations.
+•Robust Change Management
+-Comprehensive training and communication strategies were implemented.
+•Effective Vendor Collaboration
+-A close partnership with Oracle ensured timely delivery and issue resolution.
+•Rapid Implementation
+-A well-planned timeline minimized disruptions.
+b.4. Outcomes & Impact
+•Increased efficiency and scalability in business operations.
+•Enhanced real-time data analytics for better decision-making.
+•Reduction in system downtime and operational costs.
+•Improved customer service due to streamlined processes.
+
+Case Study 2: Failed Enterprise System Implementation
+c.1. Company Overview
+Company Name: Hershey’s
+Reason for Implementation
+- Hershey’s sought to upgrade its ERP system to streamline supply chain and customer service operations,
+aiming for better efficiency and integration.
+c.2. Implementation Process & Challenges
+Hershey’s attempted a “big bang” approach, launching SAP’s ERP system along with CRM and supply chain management (SCM) software simultaneously.
+However, the project faced major challenges, including an overly ambitious timeline, insufficient user training, and inadequate system testing before deployment.
