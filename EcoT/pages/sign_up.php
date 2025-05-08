@@ -22,7 +22,7 @@ if (isset($_SESSION['error'])) {
     <h1 style="margin-bottom: 20px;">Register</h1>
 
 
-        <form action="../process/register_process.php" method="POST">
+        <form action="../process/signup_process.php" method="POST">
             <!-- Name Field -->
             <div class="input-group-icon">
                 <i class="fas fa-user"></i>
