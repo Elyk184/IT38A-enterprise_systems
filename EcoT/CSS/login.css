@@ -1,0 +1,147 @@
+/* login.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Circular background decorations */
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 195, 195, 0.2);
+    z-index: 0;
+}
+
+body::before {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    left: -100px;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    bottom: -150px;
+    right: -150px;
+}
+
+.login-container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 1;
+}
+
+h2 {
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 24px;
+}
+
+.input-group-icon {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 16px;
+}
+
+.input-group-icon i {
+    color: #999;
+    margin-right: 10px;
+}
+
+.input-group-icon input {
+    border: none;
+    background: none;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+}
+
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.toggle-password {
+    cursor: pointer;
+    color: #999;
+    padding-left: 10px;
+}
+
+.input-group button {
+    width: 100%;
+    padding: 12px;
+    background-color: #42c7d9;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.input-group button:hover {
+    background-color: #36b0c2;
+}
+
+a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #42c7d9;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password,
+.signup-link {
+    margin-top: 10px;
+    display: block;
+    font-size: 14px;
+    color: #666;
+}
+
+.signup-link a {
+    color: #42c7d9;
+    font-weight: bold;
+}
+
+.forgot-password a {
+    color: #42c7d9;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+

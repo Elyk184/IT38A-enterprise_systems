@@ -1,0 +1,191 @@
+[33mcommit 62699c366f8d8e565b20d32f840196b48fba3810[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: 5f498ee 5dc2b1a
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Thu Mar 13 15:46:12 2025 +0800
+
+    Merge pull request #2 from Elyk184/entrep-dev
+    
+    Merge pull request #1 from Elyk184/main
+
+[33mcommit 5dc2b1aefce389b081bbe7f65fd319213881e5be[m
+Merge: d399708 5f498ee
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Thu Mar 13 15:18:52 2025 +0800
+
+    Merge pull request #1 from Elyk184/main
+    
+    Main
+
+[33mcommit 5f498eeeea85d1d00e5522b57989285f7b2bcf9a[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:14:17 2025 +0800
+
+    added reset-password.php
+
+[33mcommit 920e616bcddfaf6ef5c2085be1def4d109bad12b[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:13:26 2025 +0800
+
+    added logout.php
+
+[33mcommit 812f30aa04732c8aca91df7e57df1432710f0994[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:12:57 2025 +0800
+
+    added welcome.php
+
+[33mcommit 88f567146434b9ce87a5dfaeb859240bf7dea38a[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:11:57 2025 +0800
+
+    added login.php
+
+[33mcommit 2c05a258f614bfc4d645427cada250443f4c401c[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:11:08 2025 +0800
+
+    added register.php
+
+[33mcommit 2dc097bdc44cabbb71e0f0fe4db5b68ead16cf96[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:10:03 2025 +0800
+
+    added config.php
+
+[33mcommit d399708fbf1a530a2c0ac73eb67c049060952ce9[m
+Author: Ronabaldoza <>
+Date:   Thu Mar 13 15:04:13 2025 +0800
+
+    update file
+
+[33mcommit 8d9e86abf8d6f9ebe2a1f8e5af6e1207de51c873[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:41:31 2025 +0800
+
+    Update the comparative analysis
+
+[33mcommit cf4abc84ea7d4a48d333206407092c541227b857[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:28:24 2025 +0800
+
+    Test2
+
+[33mcommit 9991557aa998007afab41a7500e287d17752c4c4[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:27:06 2025 +0800
+
+    Test 1
+
+[33mcommit 1ec8e7731815e7560e372134a0a697d23fa4c181[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:24:58 2025 +0800
+
+    Update IT38A_Reasearch Report-02062025_Batch 2
+    
+    Added reference
+
+[33mcommit b606404d9ba16f32426faeade546c71b5481715d[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:14:24 2025 +0800
+
+    Update IT38A_Reasearch Report-02062025_Batch 2
+    
+    Complete comparative analysis and added insights and recommendation
+
+[33mcommit 6daac4c698931ffa01a08c5b77271802480008b3[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:08:35 2025 +0800
+
+    Update IT38A_Reasearch Report-02062025_Batch 2
+    
+    Complete the case study 2 and added comparative analysis
+
+[33mcommit b97d368435d9ec58a2fff0b0160493b37dfb1c66[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 19:03:21 2025 +0800
+
+    Update IT38A_Reasearch Report-02062025_Batch 2
+    
+    Finish the case study 1 and added case study 2(c1&c2)
+
+[33mcommit eaf67690984008c193656fa34baed6809305669d[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 18:51:24 2025 +0800
+
+    Create IT38A_Reasearch Report-02062025_Batch 2
+    
+    Added case study 1 b1&b2
+
+[33mcommit 1029f56d74297f7e5dab40044e6167db66379ff3[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 18:43:59 2025 +0800
+
+    Add files via upload
+    
+    Added case study 1 b1&b2
+
+[33mcommit 9fb05f9bd514ad6ca2ce9e565dfd96a0cadba0f2[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 18:30:25 2025 +0800
+
+    Rename Success vs Fail.docx to IT38A_Reasearch Report-02062025_Batch-2
+
+[33mcommit a779f7a57421a47ec88d073951d7772ae9e051fe[m
+Author: Elyk184 <143567530+Elyk184@users.noreply.github.com>
+Date:   Fri Feb 7 18:25:19 2025 +0800
+
+    Add files via upload
+
+[33mcommit d08a72cd01e1ba0bb4713be9635422705f96f1a2[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:48:41 2025 +0800
+
+    update style.css
+
+[33mcommit 6b8c8d5151cfdf22a5e3c1857fc102945c6b475d[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:42:09 2025 +0800
+
+    update index.php
+
+[33mcommit 523d312a0ac6626cec68e6054c19986b5b366023[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:37:47 2025 +0800
+
+    update files in style.css
+
+[33mcommit 9b9ee1ffc1ade2b12200e64706c57e7c5425f258[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:19:55 2025 +0800
+
+    update index.php News
+
+[33mcommit 9d794bac35abde2cb7c4a41e4d021c913b0d7e61[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:12:12 2025 +0800
+
+    update index.php
+
+[33mcommit 94200c902485b334eff59dbf996ee59d59e7a13c[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:08:41 2025 +0800
+
+    update index.php
+
+[33mcommit 780e1fb5a92362ccd779c825785d9969fed70af0[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 15:01:50 2025 +0800
+
+     added files in style.css
+
+[33mcommit daa381e9e4c0320fb162ef8857cc54edd6216ceb[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 14:58:12 2025 +0800
+
+    added files in index.php
+
+[33mcommit 58d2f98ef7b8971d8fa6fa2daec378f41f5b32bc[m
+Author: kyle <kyletapac4@gmail.com>
+Date:   Thu Feb 6 14:53:58 2025 +0800
+
+     added folder index.php, added folder style.css
