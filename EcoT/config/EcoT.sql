@@ -1,89 +1,71 @@
-<?php
-session_start();
-$errorMessage = '';
-if (isset($_SESSION['error'])) {
-    $errorMessage = $_SESSION['error'];
-    unset($_SESSION['error']);
-}
-?>
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: May 08, 2025 at 11:38 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
-    <link rel="stylesheet" href="../CSS/login.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-<div class="login-container">
-    <div class="form-container">
-    <h1 style="margin-bottom: 20px;">Register</h1>
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
-        <form action="../process/register_process.php" method="POST">
-            <!-- Name Field -->
-            <div class="input-group-icon">
-                <i class="fas fa-user"></i>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-            </div>
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-            <!-- Email Field -->
-            <div class="input-group-icon">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-            </div>
+--
+-- Database: `ecot`
+--
 
-            <!-- Password Field -->
-            <div class="input-group-icon password-group">
-                <i class="fas fa-lock"></i>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Enter password" required>
-                    <span class="toggle-password" onclick="togglePassword('password', 'eye-icon')">
-                        <i class="fas fa-eye-slash" id="eye-icon"></i>
-                    </span>
-                </div>
-            </div>
+-- --------------------------------------------------------
 
-            <!-- Confirm Password Field -->
-            <div class="input-group-icon password-group">
-                <i class="fas fa-lock"></i>
-                <div class="password-wrapper">
-                    <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm password" required>
-                    <span class="toggle-password" onclick="togglePassword('confirm-password', 'eye-icon2')">
-                        <i class="fas fa-eye-slash" id="eye-icon2"></i>
-                    </span>
-                </div>
-            </div>
+--
+-- Table structure for table `users`
+--
 
-            <!-- Submit Button -->
-            <div class="input-group">
-                <button type="submit">Register</button>
-            </div>
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','user') DEFAULT 'user',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-            <!-- Login Redirect -->
-            <div class="forgot-password">
-                <p>Already have an account? <a href="../pages/login.php">Login</a></p>
-            </div>
-        </form>
-    </div>
-</div>
+--
+-- Dumping data for table `users`
+--
 
-<script>
-    function togglePassword(inputId, iconId) {
-        const passwordInput = document.getElementById(inputId);
-        const eyeIcon = document.getElementById(iconId);
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            eyeIcon.classList.remove("fa-eye-slash");
-            eyeIcon.classList.add("fa-eye");
-        } else {
-            passwordInput.type = "password";
-            eyeIcon.classList.remove("fa-eye");
-            eyeIcon.classList.add("fa-eye-slash");
-        }
-    }
-</script>
-</body>
-</html>
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VALUES
+(1, 'kyle', 'kyle@gmail.com', '$2y$10$ybQUlvy09mw4TbIBCsEiJeubqJvLRpi4ZUoGmSpXWAIzT7iMNr1zS', 'admin', '2025-05-08 09:28:56'),
+(2, 'vince', 'vince@gmail.com', '$2y$10$BoemXwn0KFuW4/iLYW/r0..03KvMt/VT7OMUBtj8H/IkDqtFg0zh6', 'user', '2025-05-08 09:31:56');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
