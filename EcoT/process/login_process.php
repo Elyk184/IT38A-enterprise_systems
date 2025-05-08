@@ -34,7 +34,7 @@ try {
             if ($user['role'] === 'admin') {
                 header("Location: ../dashboard/admin_dashboard.php");
             } else {
-                header("Location: ../dashboard/user_dashboard.php");
+                header("Location: ../pages/dashboard.php");
             }
             exit();
         } else {

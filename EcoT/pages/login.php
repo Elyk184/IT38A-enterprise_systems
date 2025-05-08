@@ -25,36 +25,34 @@ if (isset($_SESSION['error'])) {
    
     <h2>Login here</h2>
     <form action="../process/login_process.php" method="POST">
-        <!-- Email Field with Icon -->
-        <div class="input-group-icon">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="email" name="email" placeholder="Email" required>
+    <!-- Email Field with Icon -->
+    <div class="input-group-icon">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+    </div>
+
+    <!-- Password Field with Icon & Eye Icon Inside -->
+    <div class="input-group-icon password-group">
+        <i class="fas fa-lock"></i>
+        <div class="password-wrapper">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <span class="toggle-password" onclick="togglePassword()">
+                <i class="fas fa-eye-slash" id="eye-icon"></i>
+            </span>
         </div>
+    </div>
 
-        <!-- Password Field with Icon & Eye Icon Inside -->
-        <div class="input-group-icon password-group">
-            <i class="fas fa-lock"></i>
-            <div class="password-wrapper">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <span class="toggle-password" onclick="togglePassword()">
-                    <i class="fas fa-eye-slash" id="eye-icon"></i>
-                </span>
-            </div>
-        </div>
-    </form>
-</div>
+    <!-- Forgot Password Link -->
+    <div class="forgot-password">
+        <a href="forgot_password.php">Forgot Password?</a>
+    </div>
 
+    <!-- Login Button -->
+    <div class="input-group">
+        <button type="submit">Login</button>
+    </div>
+</form>
 
-            <!-- Forgot Password Link -->
-            <div class="forgot-password">
-                <a href="forgot_password.php">Forgot Password?</a>
-            </div>
-
-            <!-- Login Button -->
-            <div class="input-group">
-                <button type="submit">Login</button>
-            </div>
-        </form>
 
            <!-- Forgot Password Link -->
            <div class="forgot-password">
