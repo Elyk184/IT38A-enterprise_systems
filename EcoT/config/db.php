@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db = 'EcoT';
+$db = 'ecot';
 $user = 'root';
 $pass = ''; // or your MySQL password
 $charset = 'utf8mb4';

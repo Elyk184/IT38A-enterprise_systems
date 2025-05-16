@@ -45,6 +45,31 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VA
 (2, 'vince', 'vince@gmail.com', '$2y$10$BoemXwn0KFuW4/iLYW/r0..03KvMt/VT7OMUBtj8H/IkDqtFg0zh6', 'user', '2025-05-08 09:31:56');
 
 --
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `rating` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`name`, `description`, `price`, `image`, `rating`) VALUES
+('Ballpen', 'A writing instrument that provides a smooth and reliable writing experience.', 10.00, 'ballpen.png', 4),
+('Folder', 'A container used to organize and manage information.', 12.00, 'folder.png', 3),
+('Binder Notebook', 'A wire-bound notebook perfect for organizing several subjects in one.', 85.00, 'notebook.png', 4),
+('Printer Ink', 'Dye-based ink for high-quality printing with mass-free refills.', 295.00, 'printer-ink.png', 4);
+
+--
 -- Indexes for dumped tables
 --
 

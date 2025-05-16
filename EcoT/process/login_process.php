@@ -32,7 +32,7 @@ try {
 
             // Redirect based on role
             if ($user['role'] === 'admin') {
-                header("Location: ../dashboard/admin_dashboard.php");
+                header("Location: ../admin/dashboard.php");
             } else {
                 header("Location: ../pages/dashboard.php");
             }
