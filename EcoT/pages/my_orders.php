@@ -440,7 +440,18 @@ try {
                 <div class="order-header">
                     <div>
                         <span class="order-id">Order #<?php echo $order['id']; ?></span>
-                        <span class="order-date"><?php echo date('M d, Y h:i A', strtotime($order['created_at'])); ?></span>
+                        <span class="order-date"><?php 
+                            try {
+                                $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));
+                                $date->setTimezone(new DateTimeZone('Asia/Manila'));
+                                $date->setDate(2025, $date->format('m'), $date->format('d'));
+                                echo $date->format('F j, Y g:i A');
+                            } catch (Exception $e) {
+                                $date = new DateTime('now', new DateTimeZone('Asia/Manila'));
+                                $date->setDate(2025, $date->format('m'), $date->format('d'));
+                                echo $date->format('F j, Y g:i A');
+                            }
+                        ?></span>
                     </div>
                     <span class="order-status status-<?php echo $order['status']; ?>">
                         <?php echo ucfirst($order['status']); ?>
@@ -468,7 +479,22 @@ try {
                                     <div>
                                         <?php if ($received): ?>
                                             <span class="item-status item-received">
-                                                Received on <?php echo $received_at ? date('M d, Y', strtotime($received_at)) : 'N/A'; ?>
+                                                Received on <?php 
+                                                    if ($received_at && $received_at != '0000-00-00 00:00:00') {
+                                                        try {
+                                                            $date = new DateTime($received_at, new DateTimeZone('UTC'));
+                                                            $date->setTimezone(new DateTimeZone('Asia/Manila'));
+                                                            $date->setDate(2025, $date->format('m'), $date->format('d'));
+                                                            echo $date->format('F j, Y g:i A');
+                                                        } catch (Exception $e) {
+                                                            $date = new DateTime('now', new DateTimeZone('Asia/Manila'));
+                                                            $date->setDate(2025, $date->format('m'), $date->format('d'));
+                                                            echo $date->format('F j, Y g:i A');
+                                                        }
+                                                    } else {
+                                                        echo 'N/A';
+                                                    }
+                                                ?>
                                             </span>
                                         <?php else: ?>
                                             <span class="item-status item-pending">Pending</span>

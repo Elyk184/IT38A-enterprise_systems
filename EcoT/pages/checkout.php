@@ -43,25 +43,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
     $payment_method = isset($_POST['payment']) ? $_POST['payment'] : '';
 
+    // Initialize field-specific errors
+    $field_errors = [
+        'name' => '',
+        'address' => '',
+        'phone' => '',
+        'payment' => ''
+    ];
+
     // Validate input
-    $errors = [];
+    $has_errors = false;
     if (empty($name)) {
-        $errors[] = "Name is required.";
+        $field_errors['name'] = "Name is required.";
+        $has_errors = true;
     }
     if (empty($address)) {
-        $errors[] = "Address is required.";
+        $field_errors['address'] = "Address is required.";
+        $has_errors = true;
     }
     if (empty($phone)) {
-        $errors[] = "Phone number is required.";
+        $field_errors['phone'] = "Phone number is required.";
+        $has_errors = true;
     }
     if (empty($payment_method)) {
-        $errors[] = "Payment method is required.";
+        $field_errors['payment'] = "Payment method is required.";
+        $has_errors = true;
     }
     if (empty($cart_items)) {
-        $errors[] = "Your cart is empty.";
+        $_SESSION['error'] = "Your cart is empty.";
+        header("Location: cart.php");
+        exit();
     }
 
-    if (empty($errors)) {
+    if (!$has_errors) {
         try {
             // Start transaction
             $conn->beginTransaction();
@@ -95,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             // Rollback transaction on error
             $conn->rollBack();
-            $errors[] = "Error processing order: " . $e->getMessage();
+            $_SESSION['error'] = "Error processing order: " . $e->getMessage();
         }
     }
 }
@@ -178,31 +192,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" class="w-full md:w-[280px] text-xs text-black">
                 <fieldset class="mb-4">
                     <legend class="font-bold mb-2">Shipping Address</legend>
-                    <input name="name" class="w-full border border-gray-300 text-xs px-2 py-1 mb-2 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
-                           placeholder="Name" type="text" required
-                           value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"/>
-                    <input name="address" class="w-full border border-gray-300 text-xs px-2 py-1 mb-2 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
-                           placeholder="Address" type="text" required
-                           value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?>"/>
-                    <input name="phone" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
-                           placeholder="Phone" type="text" required
-                           value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"/>
+                    <div class="mb-2">
+                        <input name="name" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
+                               placeholder="Name" type="text" required
+                               value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"/>
+                        <?php if (!empty($field_errors['name'])): ?>
+                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['name']; ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="mb-2">
+                        <input name="address" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
+                               placeholder="Address" type="text" required
+                               value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?>"/>
+                        <?php if (!empty($field_errors['address'])): ?>
+                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['address']; ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="mb-2">
+                        <input name="phone" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
+                               placeholder="Phone" type="text" required
+                               value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"/>
+                        <?php if (!empty($field_errors['phone'])): ?>
+                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['phone']; ?></p>
+                        <?php endif; ?>
+                    </div>
                 </fieldset>
 
                 <fieldset class="mb-4">
                     <legend class="font-bold mb-2">Payment</legend>
-                    <label class="flex items-center gap-2 mb-1">
-                        <input name="payment" type="radio" value="cod" <?php echo (!isset($_POST['payment']) || $_POST['payment'] === 'cod') ? 'checked' : ''; ?> required/>
-                        <span>Cash on delivery</span>
-                    </label>
-                    <label class="flex items-center gap-2 mb-1">
-                        <input name="payment" type="radio" value="gcash" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'gcash') ? 'checked' : ''; ?> required/>
-                        <span>G cash</span>
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input name="payment" type="radio" value="maya" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'maya') ? 'checked' : ''; ?> required/>
-                        <span>Pay Maya</span>
-                    </label>
+                    <div>
+                        <label class="flex items-center gap-2 mb-1">
+                            <input name="payment" type="radio" value="cod" <?php echo (!isset($_POST['payment']) || $_POST['payment'] === 'cod') ? 'checked' : ''; ?> required/>
+                            <span>Cash on delivery</span>
+                        </label>
+                        <label class="flex items-center gap-2 mb-1">
+                            <input name="payment" type="radio" value="gcash" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'gcash') ? 'checked' : ''; ?> required/>
+                            <span>G cash</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input name="payment" type="radio" value="maya" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'maya') ? 'checked' : ''; ?> required/>
+                            <span>Pay Maya</span>
+                        </label>
+                        <?php if (!empty($field_errors['payment'])): ?>
+                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['payment']; ?></p>
+                        <?php endif; ?>
+                    </div>
                 </fieldset>
 
                 <div class="flex justify-between items-center font-bold text-xs mb-2">
