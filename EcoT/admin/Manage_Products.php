@@ -105,10 +105,10 @@ try {
                         </td>
                         <td><?php echo htmlspecialchars($product['name']); ?></td>
                         <td>₱<?php echo number_format($product['price'], 2); ?></td>
-                        <td><?php echo $product['stock']; ?></td>
+                        <td><?php echo isset($product['stock']) ? $product['stock'] : 0; ?></td>
                         <td>
-                            <span class="status-badge <?php echo $product['stock'] > 0 ? 'completed' : 'cancelled'; ?>">
-                                <?php echo $product['stock'] > 0 ? 'In Stock' : 'Out of Stock'; ?>
+                            <span class="status-badge <?php echo (isset($product['stock']) && $product['stock'] > 0) ? 'completed' : 'cancelled'; ?>">
+                                <?php echo (isset($product['stock']) && $product['stock'] > 0) ? 'In Stock' : 'Out of Stock'; ?>
                             </span>
                         </td>
                         <td>

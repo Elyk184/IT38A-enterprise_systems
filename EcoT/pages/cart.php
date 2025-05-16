@@ -105,7 +105,7 @@ $total = 0;
             </div>
             <div class="cart-actions">
                 <a href="dashboard.php" class="continue-shopping">Continue Shopping</a>
-                <form action="../process/checkout.php" method="POST">
+                <form action="checkout.php" method="POST">
                     <button type="submit" class="checkout-btn">Proceed to Checkout</button>
                 </form>
             </div>

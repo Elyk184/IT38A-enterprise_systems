@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label for="stock">Stock</label>
-            <input type="number" id="stock" name="stock" min="0" value="<?php echo htmlspecialchars($product['stock']); ?>" required>
+            <input type="number" id="stock" name="stock" min="0" value="<?php echo isset($product['stock']) ? htmlspecialchars($product['stock']) : '0'; ?>" required>
         </div>
 
         <div class="form-group">

@@ -37,10 +37,11 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $address = trim($_POST['address']);
-    $phone = trim($_POST['phone']);
-    $payment_method = $_POST['payment'];
+    // Initialize variables with default values
+    $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+    $address = isset($_POST['address']) ? trim($_POST['address']) : '';
+    $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+    $payment_method = isset($_POST['payment']) ? $_POST['payment'] : '';
 
     // Validate input
     $errors = [];
@@ -86,8 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Clear cart
             unset($_SESSION['cart']);
 
+            // Store order ID and success message in session
+            $_SESSION['order_id'] = $order_id;
             $_SESSION['success'] = "Order placed successfully!";
-            header("Location: orders.php");
+            header("Location: place_order.php");
             exit();
         } catch (PDOException $e) {
             // Rollback transaction on error
@@ -189,15 +192,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <fieldset class="mb-4">
                     <legend class="font-bold mb-2">Payment</legend>
                     <label class="flex items-center gap-2 mb-1">
-                        <input name="payment" type="radio" value="cod" checked required/>
+                        <input name="payment" type="radio" value="cod" <?php echo (!isset($_POST['payment']) || $_POST['payment'] === 'cod') ? 'checked' : ''; ?> required/>
                         <span>Cash on delivery</span>
                     </label>
                     <label class="flex items-center gap-2 mb-1">
-                        <input name="payment" type="radio" value="gcash" required/>
+                        <input name="payment" type="radio" value="gcash" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'gcash') ? 'checked' : ''; ?> required/>
                         <span>G cash</span>
                     </label>
                     <label class="flex items-center gap-2">
-                        <input name="payment" type="radio" value="maya" required/>
+                        <input name="payment" type="radio" value="maya" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'maya') ? 'checked' : ''; ?> required/>
                         <span>Pay Maya</span>
                     </label>
                 </fieldset>

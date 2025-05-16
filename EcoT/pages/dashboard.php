@@ -51,6 +51,7 @@ try {
     <div class="nav-icons">
         <a href="dashboard.php"><i class="fas fa-home"></i></a>
         <a href="cart.php"><i class="fas fa-shopping-cart"></i></a>
+        <a href="my_orders.php"><i class="fas fa-box"></i></a>
         <a href="notifications.php"><i class="fas fa-bell"></i></a>
         <a href="profile.php"><i class="fas fa-user"></i></a>
         <a href="../process/logout.php"><i class="fas fa-sign-out-alt"></i></a>
@@ -69,7 +70,11 @@ try {
     <?php else: ?>
         <?php foreach ($products as $product): ?>
             <div class="product-card">
-                <img src="../images/<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <div class="product-image-container">
+                    <img src="<?php echo $product['image'] ? '../uploads/' . htmlspecialchars($product['image']) : 'https://via.placeholder.com/300x200?text=No+Image'; ?>" 
+                         alt="<?php echo htmlspecialchars($product['name']); ?>"
+                         class="product-image">
+                </div>
                 <h3><?php echo htmlspecialchars($product['name']); ?></h3>
                 <p><?php echo htmlspecialchars($product['description']); ?></p>
                 <div class="price">₱<?php echo number_format($product['price'], 2); ?></div>

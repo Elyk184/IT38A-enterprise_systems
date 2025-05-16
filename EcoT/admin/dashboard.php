@@ -59,6 +59,7 @@ try {
         <a href="dashboard.php" class="active"><i class="fas fa-home"></i> Dashboard</a>
         <a href="Manage_Products.php"><i class="fas fa-box"></i> Products</a>
         <a href="Orders.php"><i class="fas fa-shopping-cart"></i> Orders</a>
+        <a href="Manage_Users.php"><i class="fas fa-users"></i> Users</a>
         <a href="../process/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 </div>
