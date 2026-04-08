@@ -5,9 +5,9 @@
     <div class="navbar-spacer"></div>
     <div class="navbar-actions">
         <ul class="navbar-links">
-            <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="/EcoT/index.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/EcoT/pages/about.php"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="/EcoT/pages/contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
         <a href="pages/login.php" class="navbar-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
     </div>
