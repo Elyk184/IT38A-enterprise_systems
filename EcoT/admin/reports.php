@@ -83,6 +83,129 @@ try {
     <link rel="stylesheet" href="../CSS/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root{
+            --rp-bg: linear-gradient(180deg, #f7fffe 0%, #eefbf8 100%);
+            --rp-card: #ffffff;
+            --rp-border: rgba(15,118,110,.10);
+            --rp-text: #0f172a;
+            --rp-muted: #64748b;
+            --rp-primary: #14b8a6;
+            --rp-primary-dark: #0f766e;
+            --rp-shadow: 0 12px 28px rgba(15,23,42,.08);
+        }
+
+        body{ background: var(--rp-bg); }
+
+        .admin-content{ padding: 22px; }
+        .admin-header{
+            margin: 0 0 14px;
+            padding: 16px 20px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(20,184,166,.14), rgba(255,255,255,.96));
+            border: 1px solid var(--rp-border);
+            box-shadow: var(--rp-shadow);
+        }
+        .admin-title h1{
+            margin: 0;
+            color: var(--rp-primary-dark);
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .dashboard-container{ margin: 0; padding: 0; }
+
+        .date-filter{
+            background: var(--rp-card);
+            border: 1px solid var(--rp-border);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: var(--rp-shadow);
+            margin-bottom: 14px;
+        }
+        .date-filter-form{
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        .date-field{ min-width: 200px; }
+        .date-field label{
+            display: block;
+            font-size: .85rem;
+            color: var(--rp-muted);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .date-field input{
+            width: 100%;
+            border: 1px solid #dbe7e5;
+            border-radius: 10px;
+            padding: 9px 10px;
+        }
+        .filter-btn{
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, var(--rp-primary), var(--rp-primary-dark));
+            cursor: pointer;
+        }
+
+        .stats-grid{ gap: 14px; margin-bottom: 14px; }
+        .stat-card{
+            background: var(--rp-card);
+            border: 1px solid var(--rp-border);
+            border-radius: 14px;
+            box-shadow: var(--rp-shadow);
+        }
+
+        .recent-orders{
+            background: var(--rp-card);
+            border: 1px solid var(--rp-border);
+            border-radius: 16px;
+            box-shadow: var(--rp-shadow);
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+        .recent-orders h2{
+            margin: 0 0 10px;
+            color: var(--rp-text);
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .chart-wrap{
+            position: relative;
+            min-height: 320px;
+        }
+
+        .orders-table{
+            border: 1px solid #edf3f2;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .orders-table table{ width: 100%; border-collapse: collapse; }
+        .orders-table th, .orders-table td{
+            padding: 11px 12px;
+            border-bottom: 1px solid #edf3f2;
+            text-align: left;
+        }
+        .orders-table th{
+            background: #f8fffe;
+            color: #475569;
+            font-size: .84rem;
+            font-weight: 800;
+        }
+        .orders-table tbody tr:hover{ background: #f6fffd; }
+
+        @media (max-width: 992px){
+            .admin-content{ padding: 16px; }
+            .orders-table{ overflow-x: auto; }
+        }
+    </style>
 </head>
 <body>
     <?php include __DIR__ . '/includes/sidebar.php'; ?>
@@ -115,16 +238,16 @@ try {
         <div class="dashboard-container">
             <!-- Date Filter -->
             <div class="date-filter">
-                <form method="GET" class="flex gap-4">
-                    <div>
-                        <label>Start Date:</label>
-                        <input type="date" name="start_date" value="<?php echo $start_date; ?>" class="border p-2 rounded">
+                <form method="GET" class="date-filter-form">
+                    <div class="date-field">
+                        <label for="start_date">Start Date</label>
+                        <input id="start_date" type="date" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
                     </div>
-                    <div>
-                        <label>End Date:</label>
-                        <input type="date" name="end_date" value="<?php echo $end_date; ?>" class="border p-2 rounded">
+                    <div class="date-field">
+                        <label for="end_date">End Date</label>
+                        <input id="end_date" type="date" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Apply Filter</button>
+                    <button type="submit" class="filter-btn">Apply Filter</button>
                 </form>
             </div>
 
@@ -156,13 +279,17 @@ try {
             <!-- Daily Sales Chart -->
             <div class="recent-orders">
                 <h2>Daily Sales</h2>
-                <canvas id="dailySalesChart"></canvas>
+                <div class="chart-wrap">
+                    <canvas id="dailySalesChart"></canvas>
+                </div>
             </div>
 
             <!-- Order Status Distribution -->
             <div class="recent-orders">
                 <h2>Order Status Distribution</h2>
-                <canvas id="statusChart"></canvas>
+                <div class="chart-wrap">
+                    <canvas id="statusChart"></canvas>
+                </div>
             </div>
 
             <!-- Product Sales Table -->
