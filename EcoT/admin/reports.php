@@ -89,14 +89,6 @@ try {
         <div class="admin-title">
             <h1>Reports</h1>
         </div>
-        <div class="admin-nav">
-            <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="Manage_Products.php"><i class="fas fa-box"></i> Products</a>
-            <a href="Orders.php"><i class="fas fa-shopping-cart"></i> Orders</a>
-            <a href="reports.php" class="active"><i class="fas fa-chart-bar"></i> Reports</a>
-            <a href="Manage_Users.php"><i class="fas fa-users"></i> Users</a>
-            <a href="../process/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </div>
     </div>
 
     <?php if (isset($_SESSION['success'])): ?>
@@ -139,21 +131,21 @@ try {
                 <i class="fas fa-shopping-cart"></i>
                 <div class="stat-info">
                     <h3>Total Orders</h3>
-                    <p><?php echo number_format($sales_summary['total_orders']); ?></p>
+                    <p><?php echo number_format($sales_summary['total_orders'] ?? 0); ?></p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-money-bill-wave"></i>
                 <div class="stat-info">
                     <h3>Total Sales</h3>
-                    <p>₱<?php echo number_format($sales_summary['total_sales'], 2); ?></p>
+                    <p>₱<?php echo number_format($sales_summary['total_sales'] ?? 0, 2); ?></p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-chart-line"></i>
                 <div class="stat-info">
                     <h3>Average Order Value</h3>
-                    <p>₱<?php echo number_format($sales_summary['average_order_value'], 2); ?></p>
+                    <p>₱<?php echo number_format($sales_summary['average_order_value'] ?? 0, 2); ?></p>
                 </div>
             </div>
         </div>
@@ -252,4 +244,4 @@ try {
         });
     </script>
 </body>
-</html> 
+</html>
