@@ -165,9 +165,8 @@ if (!function_exists('isActiveAny')) {
     color: var(--sb-muted);
 }
 
-/* Keep content shifted right */
+/* Keep content shifted right - FIXED */
 .main-content,
-.dashboard-container,
 .admin-content,
 .content-wrapper{
     margin-left: var(--sb-width);
@@ -196,7 +195,6 @@ if (!function_exists('isActiveAny')) {
     }
 
     .main-content,
-    .dashboard-container,
     .admin-content,
     .content-wrapper{
         margin-left: 84px;

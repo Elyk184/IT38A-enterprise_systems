@@ -39,6 +39,225 @@ try {
     <title>Manage Products</title>
     <link rel="stylesheet" href="../CSS/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root{
+            --page-bg: linear-gradient(180deg, #f7fffe 0%, #eefbf8 100%);
+            --card-bg: rgba(255,255,255,.96);
+            --card-border: rgba(15, 118, 110, .08);
+            --text: #0f172a;
+            --muted: #64748b;
+            --primary: #14b8a6;
+            --primary-dark: #0f766e;
+            --shadow: 0 14px 34px rgba(15, 23, 42, .08);
+        }
+
+        body{
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: var(--page-bg);
+            color: var(--text);
+        }
+
+        .admin-content{
+            margin-left: 266px;
+            padding: 20px 22px 22px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .admin-header{
+            margin: 0 0 14px 0;
+            padding: 18px 20px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(20,184,166,.12), rgba(255,255,255,.95));
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+        }
+
+        .admin-title h1{
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: .2px;
+        }
+
+        .dashboard-container{
+            margin: 0;
+            padding: 0;
+        }
+
+        .action-bar{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0 0 14px 0;
+        }
+
+        .add-btn{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(20, 184, 166, .22);
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .add-btn:hover{
+            transform: translateY(-1px);
+            box-shadow: 0 14px 24px rgba(20, 184, 166, .28);
+        }
+
+        .products-table{
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .products-table table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .products-table thead th{
+            text-align: left;
+            padding: 14px 16px;
+            font-size: .88rem;
+            color: #475569;
+            background: #f8fffe;
+            border-bottom: 1px solid #e5f2ef;
+        }
+
+        .products-table tbody td{
+            padding: 14px 16px;
+            border-bottom: 1px solid #edf3f2;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .products-table tbody tr:hover{
+            background: #f6fffd;
+        }
+
+        .product-thumbnail{
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, .06);
+        }
+
+        .no-image{
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #f1f5f9;
+            color: var(--muted);
+            font-size: .75rem;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .status-badge{
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 11px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 800;
+        }
+
+        .status-badge.completed{
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .status-badge.cancelled{
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .action-buttons{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-btn,
+        .delete-btn{
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform .16s ease, box-shadow .16s ease;
+        }
+
+        .edit-btn{
+            background: #e0f2fe;
+            color: #2563eb;
+        }
+
+        .delete-btn{
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .edit-btn:hover,
+        .delete-btn:hover{
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(15, 23, 42, .10);
+        }
+
+        .delete-form{
+            margin: 0;
+        }
+
+        .alert{
+            margin-bottom: 14px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            font-weight: 700;
+        }
+
+        .alert.success{
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert.error{
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 992px){
+            .admin-content{
+                margin-left: 84px;
+                padding: 16px;
+            }
+
+            .products-table{
+                overflow-x: auto;
+            }
+        }
+    </style>
 </head>
 <body>
 
