@@ -40,11 +40,23 @@ try {
     <link rel="stylesheet" href="../CSS/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        :root{
+            --bg: linear-gradient(180deg, #f7fffe 0%, #eefbf8 100%);
+            --card: rgba(255,255,255,.92);
+            --card-border: rgba(15, 118, 110, .08);
+            --text: #0f172a;
+            --muted: #64748b;
+            --primary: #14b8a6;
+            --primary-dark: #0f766e;
+            --accent: #2dd4bf;
+            --shadow: 0 14px 34px rgba(15, 23, 42, .08);
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(180deg, #f4fbfb 0%, #eef8f5 100%);
-            color: #1f2937;
+            background: var(--bg);
+            color: var(--text);
         }
 
         .admin-layout {
@@ -53,9 +65,9 @@ try {
         }
 
         .main-content {
-            margin-left: 260px;
-            width: calc(100% - 260px);
-            padding: 24px;
+            margin-left: 266px;
+            width: calc(100% - 266px);
+            padding: 26px;
             box-sizing: border-box;
         }
 
@@ -63,38 +75,42 @@ try {
         .welcome-card,
         .panel,
         .stat-card {
-            background: #fff;
-            border: 1px solid rgba(66, 199, 217, 0.10);
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
         }
 
         .top-card {
-            border-radius: 20px;
-            padding: 22px 24px;
+            border-radius: 22px;
+            padding: 24px 26px;
             margin-bottom: 22px;
+            background: linear-gradient(135deg, rgba(20,184,166,.14), rgba(255,255,255,.95));
         }
 
         .top-card h1 {
             margin: 0 0 6px;
-            font-size: 1.6rem;
-            color: #2d7d46;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-dark);
         }
 
         .top-card p,
         .welcome-card p {
             margin: 0;
-            color: #6b7280;
+            color: var(--muted);
         }
 
         .welcome-card {
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 24px;
             margin-bottom: 22px;
         }
 
         .welcome-card h2 {
             margin: 0 0 8px;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
+            font-weight: 800;
             color: #111827;
         }
 
@@ -106,58 +122,69 @@ try {
         }
 
         .stat-card {
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 22px;
             display: flex;
             align-items: center;
             gap: 16px;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 38px rgba(15, 23, 42, .10);
         }
 
         .stat-card i {
-            width: 54px;
-            height: 54px;
-            border-radius: 16px;
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
             display: grid;
             place-items: center;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             color: #fff;
-            background: linear-gradient(135deg, #42c7d9, #2d7d46);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 10px 20px rgba(20, 184, 166, .26);
         }
 
         .stat-info h3 {
             margin: 0;
-            font-size: 0.95rem;
-            color: #6b7280;
-            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--muted);
+            font-weight: 700;
         }
 
         .stat-info p {
             margin: 6px 0 0;
             font-size: 2rem;
             font-weight: 800;
-            color: #111827;
+            color: #0f172a;
+            line-height: 1;
         }
 
         .panel {
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 22px;
         }
 
         .panel-header {
             margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(15, 118, 110, .08);
         }
 
         .panel-header h2 {
             margin: 0;
             font-size: 1.2rem;
-            color: #111827;
+            font-weight: 800;
+            color: #0f172a;
         }
 
         .alert {
             margin-bottom: 16px;
             padding: 14px 18px;
-            border-radius: 12px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-weight: 700;
         }
 
         .alert.success {
@@ -185,20 +212,20 @@ try {
         thead th {
             text-align: left;
             padding: 14px 12px;
-            font-size: 0.92rem;
-            color: #374151;
-            background: #f8fafc;
-            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+            color: #475569;
+            background: #f8fffe;
+            border-bottom: 1px solid #e5f2ef;
         }
 
         tbody td {
             padding: 14px 12px;
-            border-bottom: 1px solid #eef2f7;
-            color: #374151;
+            border-bottom: 1px solid #edf3f2;
+            color: #334155;
         }
 
         tbody tr:hover {
-            background: #f9fffe;
+            background: #f6fffd;
         }
 
         .status-badge {
@@ -206,8 +233,8 @@ try {
             align-items: center;
             padding: 6px 10px;
             border-radius: 999px;
-            font-size: 0.82rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 800;
         }
 
         .status-badge.pending { background: #fff7ed; color: #c2410c; }
@@ -224,24 +251,22 @@ try {
             border-radius: 10px;
             text-decoration: none;
             color: #fff;
-            background: linear-gradient(135deg, #42c7d9, #2d7d46);
-            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            font-weight: 700;
+            box-shadow: 0 8px 18px rgba(20, 184, 166, .22);
         }
 
         .no-data {
             text-align: center;
-            color: #6b7280;
+            color: var(--muted);
             padding: 28px 0;
         }
 
         @media (max-width: 900px) {
             .main-content {
-                margin-left: 0;
-                width: 100%;
-            }
-
-            .admin-layout {
-                flex-direction: column;
+                margin-left: 84px;
+                width: calc(100% - 84px);
+                padding: 18px;
             }
         }
     </style>
