@@ -15,12 +15,16 @@ if (isset($_SESSION['error'])) {
     <title>Register Page</title>
     <link rel="stylesheet" href="../CSS/login.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .back-home-group {
+            margin-top: 12px; /* space between Register and Back to Home buttons */
+        }
+    </style>
 </head>
 <body>
 <div class="login-container">
     <div class="form-container">
     <h1 style="margin-bottom: 20px;">Register</h1>
-
 
         <form action="../process/signup_process.php" method="POST">
             <!-- Name Field -->
@@ -60,6 +64,11 @@ if (isset($_SESSION['error'])) {
             <!-- Submit Button -->
             <div class="input-group">
                 <button type="submit">Register</button>
+            </div>
+
+            <!-- Back to Home Button -->
+            <div class="input-group back-home-group">
+                <button type="button" onclick="window.location.href='../index.php'">Back to Home</button>
             </div>
 
             <!-- Login Redirect -->
