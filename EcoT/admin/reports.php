@@ -85,105 +85,109 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="admin-header">
-        <div class="admin-title">
-            <h1>Reports</h1>
-        </div>
-    </div>
+    <?php include __DIR__ . '/includes/sidebar.php'; ?>
 
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert success">
-            <?php 
-            echo $_SESSION['success'];
-            unset($_SESSION['success']);
-            ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert error">
-            <?php 
-            echo $_SESSION['error'];
-            unset($_SESSION['error']);
-            ?>
-        </div>
-    <?php endif; ?>
-
-    <div class="dashboard-container">
-        <!-- Date Filter -->
-        <div class="date-filter">
-            <form method="GET" class="flex gap-4">
-                <div>
-                    <label>Start Date:</label>
-                    <input type="date" name="start_date" value="<?php echo $start_date; ?>" class="border p-2 rounded">
-                </div>
-                <div>
-                    <label>End Date:</label>
-                    <input type="date" name="end_date" value="<?php echo $end_date; ?>" class="border p-2 rounded">
-                </div>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Apply Filter</button>
-            </form>
-        </div>
-
-        <!-- Summary Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fas fa-shopping-cart"></i>
-                <div class="stat-info">
-                    <h3>Total Orders</h3>
-                    <p><?php echo number_format($sales_summary['total_orders'] ?? 0); ?></p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-money-bill-wave"></i>
-                <div class="stat-info">
-                    <h3>Total Sales</h3>
-                    <p>₱<?php echo number_format($sales_summary['total_sales'] ?? 0, 2); ?></p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-chart-line"></i>
-                <div class="stat-info">
-                    <h3>Average Order Value</h3>
-                    <p>₱<?php echo number_format($sales_summary['average_order_value'] ?? 0, 2); ?></p>
-                </div>
+    <div class="admin-content">
+        <div class="admin-header">
+            <div class="admin-title">
+                <h1>Reports</h1>
             </div>
         </div>
 
-        <!-- Daily Sales Chart -->
-        <div class="recent-orders">
-            <h2>Daily Sales</h2>
-            <canvas id="dailySalesChart"></canvas>
-        </div>
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert success">
+                <?php 
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);
+                ?>
+            </div>
+        <?php endif; ?>
 
-        <!-- Order Status Distribution -->
-        <div class="recent-orders">
-            <h2>Order Status Distribution</h2>
-            <canvas id="statusChart"></canvas>
-        </div>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert error">
+                <?php 
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
 
-        <!-- Product Sales Table -->
-        <div class="recent-orders">
-            <h2>Product Sales</h2>
-            <div class="orders-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Units Sold</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($product_sales as $product): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($product['name']); ?></td>
-                            <td><?php echo number_format($product['total_quantity']); ?></td>
-                            <td>₱<?php echo number_format($product['total_revenue'], 2); ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+        <div class="dashboard-container">
+            <!-- Date Filter -->
+            <div class="date-filter">
+                <form method="GET" class="flex gap-4">
+                    <div>
+                        <label>Start Date:</label>
+                        <input type="date" name="start_date" value="<?php echo $start_date; ?>" class="border p-2 rounded">
+                    </div>
+                    <div>
+                        <label>End Date:</label>
+                        <input type="date" name="end_date" value="<?php echo $end_date; ?>" class="border p-2 rounded">
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Apply Filter</button>
+                </form>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div class="stat-info">
+                        <h3>Total Orders</h3>
+                        <p><?php echo number_format($sales_summary['total_orders'] ?? 0); ?></p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div class="stat-info">
+                        <h3>Total Sales</h3>
+                        <p>₱<?php echo number_format($sales_summary['total_sales'] ?? 0, 2); ?></p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="stat-info">
+                        <h3>Average Order Value</h3>
+                        <p>₱<?php echo number_format($sales_summary['average_order_value'] ?? 0, 2); ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Sales Chart -->
+            <div class="recent-orders">
+                <h2>Daily Sales</h2>
+                <canvas id="dailySalesChart"></canvas>
+            </div>
+
+            <!-- Order Status Distribution -->
+            <div class="recent-orders">
+                <h2>Order Status Distribution</h2>
+                <canvas id="statusChart"></canvas>
+            </div>
+
+            <!-- Product Sales Table -->
+            <div class="recent-orders">
+                <h2>Product Sales</h2>
+                <div class="orders-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Units Sold</th>
+                                <th>Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($product_sales as $product): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($product['name']); ?></td>
+                                <td><?php echo number_format($product['total_quantity']); ?></td>
+                                <td>₱<?php echo number_format($product['total_revenue'], 2); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
