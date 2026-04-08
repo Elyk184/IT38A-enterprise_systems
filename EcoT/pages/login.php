@@ -15,6 +15,11 @@ if (isset($_SESSION['error'])) {
     <title>Login Page</title>
     <link rel="stylesheet" href="../CSS/login.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .back-home-group {
+            margin-top: 12px; /* space between Login and Back to Home buttons */
+        }
+    </style>
 </head>
 <body>
 <div class="login-container">
@@ -50,6 +55,11 @@ if (isset($_SESSION['error'])) {
     <!-- Login Button -->
     <div class="input-group">
         <button type="submit">Login</button>
+    </div>
+
+    <!-- Back to Home Button -->
+    <div class="input-group back-home-group">
+        <button type="button" onclick="window.location.href='../index.php'">Back to Home</button>
     </div>
 </form>
 
