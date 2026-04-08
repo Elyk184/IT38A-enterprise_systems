@@ -2,28 +2,30 @@
     <div class="navbar-logo">
         <i class="fas fa-leaf"></i> EcoT
     </div>
-    <ul class="navbar-links">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="navbar-spacer"></div>
     <div class="navbar-actions">
+        <ul class="navbar-links">
+            <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
         <a href="pages/login.php" class="navbar-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
     </div>
 </nav>
 <style>
     .navbar {
         width: 100vw;
+        left: 0;
+        right: 0;
         background: #fff;
         box-shadow: 0 2px 12px rgba(0, 195, 195, 0.07);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 32px;
+        padding: 0 0;
         height: 64px;
         position: fixed;
         top: 0;
-        left: 0;
         z-index: 10;
     }
     .navbar-logo {
@@ -33,6 +35,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        padding-left: 32px;
+    }
+    .navbar-spacer {
+        flex: 1;
     }
     .navbar-links {
         list-style: none;
@@ -47,15 +53,23 @@
         font-weight: 500;
         font-size: 1rem;
         transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 8px;
+        height: 64px;
+        line-height: 64px;
     }
     .navbar-links li a:hover {
         color: #2d7d46;
         text-decoration: underline;
+        background: rgba(66, 199, 217, 0.07);
     }
     .navbar-actions {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 24px;
+        padding-right: 32px;
     }
     .navbar-btn {
         background: #42c7d9;
@@ -72,6 +86,9 @@
         align-items: center;
         gap: 8px;
         box-shadow: 0 2px 8px rgba(66, 199, 217, 0.08);
+        height: 40px;
+        margin-top: 12px;
+        margin-bottom: 12px;
     }
     .navbar-btn:hover {
         background: #36b0c2;
@@ -80,7 +97,11 @@
         .navbar {
             flex-direction: column;
             height: auto;
-            padding: 0 8px;
+            padding: 0 0;
+        }
+        .navbar-logo, .navbar-actions {
+            padding-left: 8px;
+            padding-right: 8px;
         }
         .navbar-links {
             gap: 12px;
