@@ -136,140 +136,137 @@ try {
 </head>
 <body>
 
-<div class="admin-header">
-    <div class="admin-title">
-        <h1>Manage Users</h1>
-    </div>
-    <div class="admin-nav">
-        <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="Manage_Products.php"><i class="fas fa-box"></i> Products</a>
-        <a href="Orders.php"><i class="fas fa-shopping-cart"></i> Orders</a>
-        <a href="Manage_Users.php" class="active"><i class="fas fa-users"></i> Users</a>
-        <a href="../process/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    </div>
-</div>
+<?php include __DIR__ . '/includes/sidebar.php'; ?>
 
-<?php if (isset($_SESSION['success'])): ?>
-    <div class="alert success">
-        <?php 
-        echo $_SESSION['success'];
-        unset($_SESSION['success']);
-        ?>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="alert error">
-        <?php 
-        echo $_SESSION['error'];
-        unset($_SESSION['error']);
-        ?>
-    </div>
-<?php endif; ?>
-
-<div class="dashboard-container">
-    <div class="user-stats">
-        <div class="stat-card">
-            <i class="fas fa-users"></i>
-            <div class="stat-info">
-                <h3>Total Users</h3>
-                <p><?php echo $user_counts['total_users']; ?></p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <i class="fas fa-user-check"></i>
-            <div class="stat-info">
-                <h3>Active Users</h3>
-                <p><?php echo $user_counts['active_users']; ?></p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <i class="fas fa-user-times"></i>
-            <div class="stat-info">
-                <h3>Inactive Users</h3>
-                <p><?php echo $user_counts['inactive_users']; ?></p>
-            </div>
+<div class="admin-content">
+    <div class="admin-header">
+        <div class="admin-title">
+            <h1>Manage Users</h1>
         </div>
     </div>
 
-    <div class="filter-section">
-        <form method="GET" class="status-filter">
-            <label for="status">Filter by Status:</label>
-            <select name="status" id="status" onchange="this.form.submit()">
-                <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All Users</option>
-                <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active Users</option>
-                <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive Users</option>
-            </select>
-        </form>
-    </div>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert success">
+            <?php 
+            echo $_SESSION['success'];
+            unset($_SESSION['success']);
+            ?>
+        </div>
+    <?php endif; ?>
 
-    <div class="users-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Orders</th>
-                    <th>Total Spent</th>
-                    <th>Joined</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $user): ?>
-                    <tr class="<?php echo $user['active'] ? '' : 'inactive-user'; ?>">
-                        <td><?php echo $user['id']; ?></td>
-                        <td><?php echo htmlspecialchars($user['name']); ?></td>
-                        <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td>
-                            <?php if ($user['id'] != $_SESSION['user_id']): ?>
-                                <form method="POST" class="inline-form">
-                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                    <select name="role" onchange="this.form.submit()" class="role-select">
-                                        <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>User</option>
-                                        <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                                    </select>
-                                    <input type="hidden" name="update_role" value="1">
-                                </form>
-                            <?php else: ?>
-                                <span class="role-badge admin">Admin</span>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <?php if ($user['id'] != $_SESSION['user_id']): ?>
-                                <form method="POST" class="inline-form">
-                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                    <button type="submit" name="toggle_active" class="status-btn <?php echo $user['active'] ? 'active' : 'inactive'; ?>">
-                                        <?php echo $user['active'] ? 'Active' : 'Inactive'; ?>
-                                    </button>
-                                    <input type="hidden" name="toggle_active" value="1">
-                                </form>
-                            <?php else: ?>
-                                <span class="status-badge active">Active</span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo $user['total_orders']; ?></td>
-                        <td>₱<?php echo number_format($user['total_spent'] ?? 0, 2); ?></td>
-                        <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
-                        <td>
-                            <?php if ($user['id'] != $_SESSION['user_id']): ?>
-                                <?php if (!$user['active']): ?>
-                                    <form method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this inactive user?');">
-                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                        <button type="submit" name="delete_user" class="delete-btn">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                        </td>
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert error">
+            <?php 
+            echo $_SESSION['error'];
+            unset($_SESSION['error']);
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="dashboard-container">
+        <div class="user-stats">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-info">
+                    <h3>Total Users</h3>
+                    <p><?php echo $user_counts['total_users']; ?></p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-check"></i>
+                <div class="stat-info">
+                    <h3>Active Users</h3>
+                    <p><?php echo $user_counts['active_users']; ?></p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-times"></i>
+                <div class="stat-info">
+                    <h3>Inactive Users</h3>
+                    <p><?php echo $user_counts['inactive_users']; ?></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <form method="GET" class="status-filter">
+                <label for="status">Filter by Status:</label>
+                <select name="status" id="status" onchange="this.form.submit()">
+                    <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All Users</option>
+                    <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active Users</option>
+                    <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive Users</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="users-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Orders</th>
+                        <th>Total Spent</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user): ?>
+                        <tr class="<?php echo $user['active'] ? '' : 'inactive-user'; ?>">
+                            <td><?php echo $user['id']; ?></td>
+                            <td><?php echo htmlspecialchars($user['name']); ?></td>
+                            <td><?php echo htmlspecialchars($user['email']); ?></td>
+                            <td>
+                                <?php if ($user['id'] != $_SESSION['user_id']): ?>
+                                    <form method="POST" class="inline-form">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                        <select name="role" onchange="this.form.submit()" class="role-select">
+                                            <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>User</option>
+                                            <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                        </select>
+                                        <input type="hidden" name="update_role" value="1">
+                                    </form>
+                                <?php else: ?>
+                                    <span class="role-badge admin">Admin</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($user['id'] != $_SESSION['user_id']): ?>
+                                    <form method="POST" class="inline-form">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                        <button type="submit" name="toggle_active" class="status-btn <?php echo $user['active'] ? 'active' : 'inactive'; ?>">
+                                            <?php echo $user['active'] ? 'Active' : 'Inactive'; ?>
+                                        </button>
+                                        <input type="hidden" name="toggle_active" value="1">
+                                    </form>
+                                <?php else: ?>
+                                    <span class="status-badge active">Active</span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo $user['total_orders']; ?></td>
+                            <td>₱<?php echo number_format($user['total_spent'] ?? 0, 2); ?></td>
+                            <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                            <td>
+                                <?php if ($user['id'] != $_SESSION['user_id']): ?>
+                                    <?php if (!$user['active']): ?>
+                                        <form method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this inactive user?');">
+                                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                            <button type="submit" name="delete_user" class="delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -413,4 +410,4 @@ try {
 </style>
 
 </body>
-</html> 
+</html>
