@@ -81,6 +81,145 @@ if (isset($_GET['view'])) {
     <title>Manage Orders</title>
     <link rel="stylesheet" href="../CSS/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root{
+            --bg: linear-gradient(180deg, #f7fffe 0%, #eefbf8 100%);
+            --card: #fff;
+            --border: rgba(15,118,110,.10);
+            --text: #0f172a;
+            --muted: #64748b;
+            --pri: #14b8a6;
+            --pri2: #0f766e;
+            --shadow: 0 12px 28px rgba(15,23,42,.08);
+        }
+
+        body{ background: var(--bg); color: var(--text); }
+        .admin-content{ padding: 22px; }
+
+        .admin-header{
+            margin: 0 0 14px;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(20,184,166,.14), rgba(255,255,255,.96));
+            box-shadow: var(--shadow);
+        }
+        .admin-title h1{ margin: 0; color: var(--pri2); font-weight: 800; }
+
+        .dashboard-container{ margin: 0; padding: 0; }
+
+        .orders-table, .order-details{
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .orders-table table, .order-items table{
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 860px;
+        }
+
+        .orders-table th, .orders-table td,
+        .order-items th, .order-items td{
+            padding: 12px 14px;
+            border-bottom: 1px solid #edf3f2;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .orders-table th, .order-items th{
+            background: #f8fffe;
+            color: #475569;
+            font-size: .84rem;
+            font-weight: 800;
+        }
+
+        .orders-table tbody tr:hover,
+        .order-items tbody tr:hover{ background: #f6fffd; }
+
+        .status-badge{
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 800;
+        }
+        .status-badge.pending{ background:#fff7ed; color:#c2410c; }
+        .status-badge.processing{ background:#eff6ff; color:#2563eb; }
+        .status-badge.completed{ background:#ecfdf5; color:#047857; }
+        .status-badge.cancelled{ background:#fef2f2; color:#b91c1c; }
+
+        .view-btn{
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--pri), var(--pri2));
+            box-shadow: 0 8px 18px rgba(20,184,166,.22);
+        }
+
+        .order-details{ padding: 16px; }
+        .order-info{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .info-group{
+            background: #fbfffe;
+            border: 1px solid #e6f3f1;
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .info-group h4{ margin: 0 0 4px; color: var(--muted); font-size: .8rem; }
+        .info-group p{ margin: 0; font-weight: 700; }
+
+        .status-form select{
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #dbe7e5;
+            border-radius: 10px;
+        }
+
+        .order-items{ margin-top: 10px; overflow-x: auto; }
+        .order-items h3{
+            margin: 0;
+            padding: 12px 14px;
+            border-bottom: 1px solid #edf3f2;
+        }
+
+        .order-total{
+            margin-top: 12px;
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .cancel-btn{
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #334155;
+            background: #eef2f7;
+            font-weight: 700;
+        }
+
+        @media (max-width: 992px){
+            .admin-content{ padding: 16px; }
+            .orders-table{ overflow-x: auto; }
+        }
+    </style>
 </head>
 <body>
 
@@ -194,24 +333,30 @@ if (isset($_GET['view'])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($orders as $order): ?>
+                        <?php if (empty($orders)): ?>
                             <tr>
-                                <td>#<?php echo $order['id']; ?></td>
-                                <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
-                                <td>₱<?php echo number_format($order['total_amount'], 2); ?></td>
-                                <td>
-                                    <span class="status-badge <?php echo strtolower($order['status']); ?>">
-                                        <?php echo ucfirst($order['status']); ?>
-                                    </span>
-                                </td>
-                                <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
-                                <td>
-                                    <a href="?view=<?php echo $order['id']; ?>" class="view-btn">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                </td>
+                                <td colspan="6" style="text-align:center;color:#64748b;padding:18px;">No orders found.</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <?php foreach ($orders as $order): ?>
+                                <tr>
+                                    <td>#<?php echo $order['id']; ?></td>
+                                    <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
+                                    <td>₱<?php echo number_format($order['total_amount'], 2); ?></td>
+                                    <td>
+                                        <span class="status-badge <?php echo strtolower($order['status']); ?>">
+                                            <?php echo ucfirst($order['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
+                                    <td>
+                                        <a href="?view=<?php echo $order['id']; ?>" class="view-btn">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
