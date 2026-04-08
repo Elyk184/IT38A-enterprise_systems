@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if user is logged in and is admin
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../pages/login.php");
     exit();
@@ -21,65 +20,71 @@ if (!function_exists('isActiveAny')) {
 ?>
 
 <style>
-:root {
-    --sb-bg: #f8fcfc;
-    --sb-border: #dbe7e7;
-    --sb-text: #334155;
+:root{
+    --sb-width: 266px;
+    --sb-bg: linear-gradient(180deg, #f8fffe 0%, #edfdfb 100%);
+    --sb-border: rgba(13, 148, 136, .10);
+    --sb-text: #0f172a;
     --sb-muted: #64748b;
-    --sb-hover: #ecfeff;
-    --sb-active-1: #2ec4b6;
-    --sb-active-2: #1fa68e;
-    --sb-white: #ffffff;
+    --sb-hover: rgba(45, 212, 191, .10);
+    --sb-active: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+    --sb-icon-bg: rgba(45, 212, 191, .14);
+    --sb-icon-color: #0f766e;
+    --sb-shadow: 0 12px 30px rgba(15, 118, 110, .10);
 }
 
-.ecot-sidebar {
-    width: 264px;
+.ecot-sidebar{
+    width: var(--sb-width);
     min-height: 100vh;
     position: fixed;
-    top: 0;
-    left: 0;
-    background: linear-gradient(180deg, #fbfefe 0%, var(--sb-bg) 100%);
+    inset: 0 auto 0 0;
+    background: var(--sb-bg);
     border-right: 1px solid var(--sb-border);
-    box-shadow: 0 8px 30px rgba(15, 23, 42, .08);
+    box-shadow: var(--sb-shadow);
     z-index: 1000;
-    font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+    font-family: "Inter","Segoe UI",Tahoma,sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
-.ecot-sidebar .logo {
-    padding: 22px 18px 14px;
+.ecot-sidebar .logo{
+    padding: 22px 18px 18px;
     border-bottom: 1px solid var(--sb-border);
+    background: linear-gradient(180deg, rgba(20,184,166,.16) 0%, rgba(20,184,166,0) 100%);
 }
 
-.ecot-sidebar .logo h2 {
+.ecot-sidebar .logo h2{
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 800;
-    letter-spacing: .2px;
     color: #0f766e;
+    letter-spacing: .2px;
 }
 
-.ecot-sidebar .logo small {
+.ecot-sidebar .logo small{
     display: block;
     margin-top: 4px;
     color: var(--sb-muted);
     font-size: .78rem;
 }
 
-.ecot-sidebar nav {
-    padding: 12px 10px;
+.ecot-sidebar nav{
+    padding: 14px 10px;
+    flex: 1;
 }
 
-.ecot-sidebar ul {
+.ecot-sidebar ul{
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.ecot-sidebar li {
+.ecot-sidebar li{
     margin: 6px 0;
 }
 
-.ecot-sidebar a {
+.ecot-sidebar a{
+    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -87,81 +92,114 @@ if (!function_exists('isActiveAny')) {
     color: var(--sb-text);
     font-size: .94rem;
     font-weight: 600;
-    padding: 10px 12px;
+    padding: 11px 12px;
     border-radius: 12px;
     transition: all .18s ease;
+    overflow: hidden;
 }
 
-.ecot-sidebar a i {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+.ecot-sidebar a i{
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #e6fffb;
-    color: #0f766e;
-    font-size: .85rem;
+    background: var(--sb-icon-bg);
+    color: var(--sb-icon-color);
+    font-size: .88rem;
     transition: all .18s ease;
+    flex: 0 0 auto;
 }
 
-.ecot-sidebar a:hover {
+.ecot-sidebar a:hover{
     background: var(--sb-hover);
     color: #0f172a;
-    transform: translateX(2px);
+    transform: translateX(3px);
 }
 
-.ecot-sidebar a.active {
-    background: linear-gradient(135deg, var(--sb-active-1), var(--sb-active-2));
-    color: var(--sb-white);
-    box-shadow: 0 8px 18px rgba(31, 166, 142, .30);
+.ecot-sidebar a:hover i{
+    background: rgba(20, 184, 166, .22);
 }
 
-.ecot-sidebar a.active i {
-    background: rgba(255, 255, 255, .22);
+.ecot-sidebar a.active{
+    background: var(--sb-active);
+    color: #ffffff;
+    box-shadow: 0 10px 22px rgba(15, 118, 110, .26);
+}
+
+.ecot-sidebar a.active::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 4px;
+    border-radius: 0 6px 6px 0;
+    background: rgba(255,255,255,.95);
+}
+
+.ecot-sidebar a.active i{
+    background: rgba(255,255,255,.18);
     color: #ffffff;
 }
 
-.ecot-sidebar .logout-link:hover {
+.ecot-sidebar .logout-link{
+    margin-top: 8px;
+}
+
+.ecot-sidebar .logout-link:hover{
     background: #fff1f2;
     color: #be123c;
 }
 
-.ecot-sidebar .logout-link:hover i {
+.ecot-sidebar .logout-link:hover i{
     background: #ffe4e6;
     color: #be123c;
 }
 
-/* Common content wrappers */
+.ecot-sidebar .sidebar-footer{
+    padding: 14px 18px 18px;
+    border-top: 1px solid var(--sb-border);
+    font-size: .78rem;
+    color: var(--sb-muted);
+}
+
+/* Keep content shifted right */
 .main-content,
 .dashboard-container,
 .admin-content,
-.content-wrapper {
-    margin-left: 264px;
+.content-wrapper{
+    margin-left: var(--sb-width);
 }
 
-/* Mobile */
-@media (max-width: 992px) {
-    .ecot-sidebar {
-        width: 82px;
+@media (max-width: 992px){
+    .ecot-sidebar{
+        width: 84px;
     }
 
     .ecot-sidebar .logo h2,
     .ecot-sidebar .logo small,
-    .ecot-sidebar a span {
+    .ecot-sidebar a span,
+    .ecot-sidebar .sidebar-footer{
         display: none;
     }
 
-    .ecot-sidebar a {
+    .ecot-sidebar a{
         justify-content: center;
-        padding: 10px;
+        padding: 11px;
+    }
+
+    .ecot-sidebar a.active::before{
+        top: 8px;
+        bottom: 8px;
     }
 
     .main-content,
     .dashboard-container,
     .admin-content,
-    .content-wrapper {
-        margin-left: 82px;
+    .content-wrapper{
+        margin-left: 84px;
     }
 }
 </style>
@@ -222,4 +260,8 @@ if (!function_exists('isActiveAny')) {
             </li>
         </ul>
     </nav>
+
+    <div class="sidebar-footer">
+        Signed in as Admin
+    </div>
 </div>
