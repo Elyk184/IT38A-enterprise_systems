@@ -1,9 +1,14 @@
 <?php
 session_start();
 $errorMessage = '';
+$successMessage = '';
 if (isset($_SESSION['error'])) {
     $errorMessage = $_SESSION['error'];
     unset($_SESSION['error']);
+}
+if (isset($_SESSION['success'])) {
+    $successMessage = $_SESSION['success'];
+    unset($_SESSION['success']);
 }
 ?>
 
@@ -27,6 +32,18 @@ if (isset($_SESSION['error'])) {
     
       
     <div class="form-container">
+    <?php if (!empty($errorMessage)): ?>
+        <div style="background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+            <?php echo htmlspecialchars($errorMessage); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($successMessage)): ?>
+        <div style="background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+            <?php echo htmlspecialchars($successMessage); ?>
+        </div>
+    <?php endif; ?>
+
    
     <h2>Login here</h2>
     <form action="../process/login_process.php" method="POST">
