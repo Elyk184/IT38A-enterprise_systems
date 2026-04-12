@@ -12,6 +12,26 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-t');
 
+// Validate date inputs and keep a safe default range.
+$start_obj = DateTime::createFromFormat('Y-m-d', $start_date);
+$end_obj = DateTime::createFromFormat('Y-m-d', $end_date);
+
+if (!$start_obj || $start_obj->format('Y-m-d') !== $start_date) {
+    $start_date = date('Y-m-01');
+    $start_obj = DateTime::createFromFormat('Y-m-d', $start_date);
+}
+
+if (!$end_obj || $end_obj->format('Y-m-d') !== $end_date) {
+    $end_date = date('Y-m-t');
+    $end_obj = DateTime::createFromFormat('Y-m-d', $end_date);
+}
+
+if ($start_obj > $end_obj) {
+    $tmp = $start_date;
+    $start_date = $end_date;
+    $end_date = $tmp;
+}
+
 try {
     // Get total sales for the period
     $stmt = $conn->prepare("
@@ -20,8 +40,9 @@ try {
             SUM(total_amount) as total_sales,
             AVG(total_amount) as average_order_value
         FROM orders 
-        WHERE created_at BETWEEN ? AND ? 
-        AND status != 'cancelled'
+        WHERE created_at >= ?
+        AND created_at < DATE_ADD(?, INTERVAL 1 DAY)
+        AND LOWER(TRIM(status)) != 'cancelled'
     ");
     $stmt->execute([$start_date, $end_date]);
     $sales_summary = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -35,8 +56,9 @@ try {
         FROM order_items oi
         JOIN products p ON oi.product_id = p.id
         JOIN orders o ON oi.order_id = o.id
-        WHERE o.created_at BETWEEN ? AND ?
-        AND o.status != 'cancelled'
+        WHERE o.created_at >= ?
+        AND o.created_at < DATE_ADD(?, INTERVAL 1 DAY)
+        AND LOWER(TRIM(o.status)) != 'cancelled'
         GROUP BY p.id
         ORDER BY total_revenue DESC
     ");
@@ -46,11 +68,19 @@ try {
     // Get order status distribution
     $stmt = $conn->prepare("
         SELECT 
-            status,
+            CASE LOWER(TRIM(status))
+                WHEN 'pending' THEN 'Pending'
+                WHEN 'processing' THEN 'Processing'
+                WHEN 'completed' THEN 'Completed'
+                WHEN 'cancelled' THEN 'Cancelled'
+                ELSE CONCAT(UCASE(LEFT(LOWER(TRIM(status)), 1)), SUBSTRING(LOWER(TRIM(status)), 2))
+            END as status_label,
             COUNT(*) as count
         FROM orders
-        WHERE created_at BETWEEN ? AND ?
-        GROUP BY status
+        WHERE created_at >= ?
+        AND created_at < DATE_ADD(?, INTERVAL 1 DAY)
+        GROUP BY LOWER(TRIM(status))
+        ORDER BY FIELD(LOWER(TRIM(status)), 'pending', 'processing', 'completed', 'cancelled'), status_label
     ");
     $stmt->execute([$start_date, $end_date]);
     $status_distribution = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -62,8 +92,9 @@ try {
             COUNT(*) as order_count,
             SUM(total_amount) as daily_sales
         FROM orders
-        WHERE created_at BETWEEN ? AND ?
-        AND status != 'cancelled'
+        WHERE created_at >= ?
+        AND created_at < DATE_ADD(?, INTERVAL 1 DAY)
+        AND LOWER(TRIM(status)) != 'cancelled'
         GROUP BY DATE(created_at)
         ORDER BY date
     ");
@@ -353,7 +384,7 @@ try {
         new Chart(statusCtx, {
             type: 'doughnut',
             data: {
-                labels: <?php echo json_encode(array_column($status_distribution, 'status')); ?>,
+                labels: <?php echo json_encode(array_column($status_distribution, 'status_label')); ?>,
                 datasets: [{
                     data: <?php echo json_encode(array_column($status_distribution, 'count')); ?>,
                     backgroundColor: [
