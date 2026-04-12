@@ -62,7 +62,7 @@ try {
     $message .= "Status: Pending\n\n";
     $message .= "You can track your order status in the Orders section.";
     
-    createNotification($_SESSION['user_id'], $order_id, $message, 'order_placed');
+    createNotification($_SESSION['user_id'], $message, 'order_placed', $order_id);
 
     // Create admin notification for new order
     $admin_message = "New order #$order_id placed by " . ($user['name'] ?? 'Customer #' . $_SESSION['user_id']) . "!\n";

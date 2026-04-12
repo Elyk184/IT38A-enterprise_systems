@@ -3,6 +3,17 @@ require_once __DIR__ . '/../config/db.php';
 
 function createNotification($user_id, $message, $type = 'system', $order_id = null) {
     global $conn;
+    $typeMap = [
+        'new_order' => 'order',
+        'order_placed' => 'order',
+        'order_completed' => 'status',
+        'cancelled_order' => 'status'
+    ];
+    $normalizedType = $typeMap[$type] ?? $type;
+    if (!in_array($normalizedType, ['order', 'status', 'system'], true)) {
+        $normalizedType = 'system';
+    }
+
     try {
         $stmt = $conn->prepare("
             INSERT INTO notifications (user_id, message, type, order_id)
@@ -10,7 +21,7 @@ function createNotification($user_id, $message, $type = 'system', $order_id = nu
         ");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':message', $message);
-        $stmt->bindParam(':type', $type);
+        $stmt->bindParam(':type', $normalizedType);
         $stmt->bindParam(':order_id', $order_id);
         return $stmt->execute();
     } catch (PDOException $e) {
@@ -57,7 +68,7 @@ function createAdminNotification($message, $type = 'system', $order_id = null) {
     global $conn;
     try {
         // Get all admin user IDs
-        $stmt = $conn->prepare("SELECT id FROM users WHERE role = 'admin'");
+        $stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(role) = 'admin'");
         $stmt->execute();
         $admin_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
         

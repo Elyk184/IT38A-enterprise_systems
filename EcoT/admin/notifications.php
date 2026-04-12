@@ -243,9 +243,16 @@ $unread_count = getAdminUnreadNotificationCount();
         <?php else: ?>
             <div class="notifications-list">
                 <?php foreach ($notifications as $notification): ?>
+                    <?php
+                    $messageLower = strtolower((string)($notification['message'] ?? ''));
+                    $isCancelled = strpos($messageLower, 'cancel') !== false;
+                    $isNewOrder = strpos($messageLower, 'new order') !== false || $notification['type'] === 'order';
+                    $iconClass = $isCancelled ? 'cancelled-order' : ($isNewOrder ? 'new-order' : 'default');
+                    $iconName = $isCancelled ? 'fa-times-circle' : ($isNewOrder ? 'fa-shopping-bag' : 'fa-info-circle');
+                    ?>
                     <div class="notification-item <?php echo $notification['is_read'] ? 'read' : 'unread'; ?>">
-                        <div class="notif-icon <?php echo $notification['type']; ?>">
-                            <i class="fas <?php echo in_array($notification['type'], ['new_order', 'cancelled_order']) ? 'fa-exclamation-circle' : 'fa-info-circle'; ?>"></i>
+                        <div class="notif-icon <?php echo $iconClass; ?>">
+                            <i class="fas <?php echo $iconName; ?>"></i>
                         </div>
                         <div class="notif-content">
                             <h4><?php echo htmlspecialchars($notification['message']); ?></h4>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../config/db.php';
+require_once '../includes/notification_functions.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -94,6 +95,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $update_stock = $conn->prepare("UPDATE products SET stock = stock - ? WHERE id = ?");
                 $update_stock->execute([$item['quantity'], $item['id']]);
             }
+
+            // Create notification for order placement (user)
+            $message = "Your order #" . $order_id . " has been placed successfully!\n\n";
+            $message .= "Total Amount: P" . number_format($subtotal, 2) . "\n";
+            $message .= "Status: Pending\n\n";
+            $message .= "You can track your order status in the Orders section.";
+            createNotification($_SESSION['user_id'], $message, 'order_placed', $order_id);
+
+            // Create admin notification for new order
+            $customerName = isset($_SESSION['name']) && $_SESSION['name'] !== ''
+                ? $_SESSION['name']
+                : ('Customer #' . $_SESSION['user_id']);
+            $adminMessage = "New order #$order_id placed by {$customerName}!\n";
+            $adminMessage .= "Total: P" . number_format($subtotal, 2);
+            createAdminNotification($adminMessage, 'new_order', $order_id);
 
             // Commit transaction
             $conn->commit();

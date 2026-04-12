@@ -95,7 +95,7 @@ if (isset($_POST['receive_order']) && isset($_POST['order_id'])) {
             $message .= "Items received:\n" . $order['items'] . "\n\n";
             $message .= "Thank you for your purchase!";
             
-            createNotification($_SESSION['user_id'], $_POST['order_id'], $message, 'order_completed');
+            createNotification($_SESSION['user_id'], $message, 'order_completed', $_POST['order_id']);
 
             $conn->commit();
             $_SESSION['success'] = "Order received successfully. All items have been marked as received.";
