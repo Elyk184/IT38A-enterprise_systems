@@ -58,21 +58,47 @@ try {
     <title>Order Confirmation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../CSS/userdashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            padding-top: 126px;
+        }
+
+        .order-confirmation-shell {
+            width: min(1280px, 94vw);
+            margin: 0 auto;
         }
     </style>
 </head>
 <body class="bg-[#f7f7f7] relative min-h-screen flex items-center justify-center p-6 overflow-hidden">
+    <div class="dashboard-shell" style="position: fixed; top: 0; left: 0; right: 0; z-index: 20; width: min(1260px, 94vw); margin: 16px auto 0;">
+        <div class="header">
+            <div class="search-bar" aria-label="Search products">
+                <form action="dashboard.php" method="GET" role="search">
+                    <input type="text" name="search" placeholder="Search sustainable products...">
+                    <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="nav-icons">
+                <a href="dashboard.php" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="cart.php" title="Cart"><i class="fas fa-shopping-cart"></i><span>Cart</span></a>
+                <a href="my_orders.php" title="My Orders" class="active"><i class="fas fa-box"></i><span>Orders</span></a>
+                <a href="notifications.php" title="Notifications"><i class="fas fa-bell"></i><span>Notifications</span></a>
+                <a href="profile.php" title="Profile"><i class="fas fa-user"></i><span>Profile</span></a>
+                <a href="../process/logout.php" title="Logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+            </div>
+        </div>
+    </div>
+
     <!-- Decorative circles -->
     <img alt="Decorative teal circle top left large" class="absolute top-0 left-0 w-28 h-28 rounded-full opacity-40 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none" src="https://storage.googleapis.com/a1aa/image/87d15db6-e1d6-4c5d-9e45-b043a9769a42.jpg"/>
     <img alt="Decorative teal circle top left small" class="absolute top-0 left-0 w-20 h-20 rounded-full opacity-40 -translate-x-1/4 -translate-y-1/4 pointer-events-none select-none" src="https://storage.googleapis.com/a1aa/image/edb35462-fd91-4f92-3e18-ff1060fdb6a5.jpg"/>
     <img alt="Decorative teal circle bottom right large" class="absolute bottom-0 right-0 w-28 h-28 rounded-full opacity-40 translate-x-1/2 translate-y-1/2 pointer-events-none select-none" src="https://storage.googleapis.com/a1aa/image/ae1e2941-8fa2-4269-60f1-eadbd3160189.jpg"/>
     <img alt="Decorative teal circle bottom right small" class="absolute bottom-0 right-0 w-20 h-20 rounded-full opacity-40 translate-x-1/4 translate-y-1/4 pointer-events-none select-none" src="https://storage.googleapis.com/a1aa/image/1c1a21cd-8f1b-41cf-8dbc-6b0df5ec1696.jpg"/>
 
-    <main class="bg-white max-w-3xl w-full p-8 md:p-12 rounded-sm shadow-sm">
+    <main class="order-confirmation-shell bg-white max-w-3xl w-full p-8 md:p-12 rounded-sm shadow-sm">
         <div class="flex flex-col items-center mb-8">
             <div class="bg-green-600 rounded-full p-3 mb-3">
                 <i class="fas fa-check text-white text-xl"></i>

@@ -33,18 +33,19 @@ try {
 <body>
 
 <div class="header">
-    <div class="search-bar">
-        <form action="dashboard.php" method="GET">
-            <input type="text" name="search" placeholder="Search products...">
-            <button type="submit"><i class="fas fa-search"></i></button>
+    <div class="search-bar" aria-label="Search products">
+        <form action="dashboard.php" method="GET" role="search">
+            <input type="text" name="search" placeholder="Search sustainable products...">
+            <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
         </form>
     </div>
     <div class="nav-icons">
-        <a href="dashboard.php"><i class="fas fa-home"></i></a>
-        <a href="cart.php"><i class="fas fa-shopping-cart"></i></a>
-        <a href="notifications.php"><i class="fas fa-bell"></i></a>
-        <a href="profile.php"><i class="fas fa-user"></i></a>
-        <a href="../process/logout.php"><i class="fas fa-sign-out-alt"></i></a>
+        <a href="dashboard.php" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="cart.php" title="Cart"><i class="fas fa-shopping-cart"></i><span>Cart</span></a>
+        <a href="my_orders.php" title="My Orders"><i class="fas fa-box"></i><span>Orders</span></a>
+        <a href="notifications.php" title="Notifications"><i class="fas fa-bell"></i><span>Notifications</span></a>
+        <a href="profile.php" title="Profile" class="active"><i class="fas fa-user"></i><span>Profile</span></a>
+        <a href="../process/logout.php" title="Logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
     </div>
 </div>
 

@@ -123,132 +123,551 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Checkout</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="../CSS/userdashboard.css">
     <style>
+        :root {
+            --checkout-surface: rgba(255, 255, 255, 0.96);
+            --checkout-border: rgba(15, 118, 110, 0.12);
+            --checkout-shadow: 0 18px 34px rgba(15, 23, 42, 0.08);
+            --checkout-text: #0f172a;
+            --checkout-muted: #64748b;
+            --checkout-accent: #14b8a6;
+            --checkout-accent-dark: #0f766e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding-top: 118px;
+            font-family: 'Inter', sans-serif;
+        }
+
         input[type="radio"] {
             accent-color: #2563eb;
         }
+
+        .checkout-shell {
+            width: min(1180px, 94vw);
+            margin: 0 auto 44px;
+        }
+
+        .checkout-hero {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(255, 255, 255, 0.96));
+            border: 1px solid var(--checkout-border);
+            border-radius: 20px;
+            padding: 22px 26px;
+            box-shadow: var(--checkout-shadow);
+            margin-bottom: 18px;
+        }
+
+        .checkout-hero h1 {
+            margin: 0;
+            font-size: clamp(1.35rem, 2vw, 2rem);
+            font-weight: 800;
+            color: var(--checkout-text);
+        }
+
+        .checkout-hero p {
+            margin: 8px 0 0;
+            color: var(--checkout-muted);
+            font-size: 0.98rem;
+        }
+
+        .checkout-panel {
+            background: var(--checkout-surface);
+            border: 1px solid var(--checkout-border);
+            border-radius: 22px;
+            box-shadow: var(--checkout-shadow);
+            overflow: visible;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
+            gap: 0;
+            align-items: start;
+        }
+
+        .checkout-products,
+        .checkout-form-wrap {
+            padding: 24px;
+            position: sticky;
+            top: 136px;
+            align-self: start;
+        }
+
+        .checkout-products {
+            border-right: 1px solid rgba(226, 232, 240, 0.9);
+        }
+
+        .section-title {
+            margin: 0 0 14px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--checkout-text);
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-table th {
+            text-align: left;
+            padding: 0 0 12px;
+            color: #475569;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .product-table td {
+            padding: 14px 0;
+            border-top: 1px solid rgba(226, 232, 240, 0.85);
+            vertical-align: top;
+            color: var(--checkout-text);
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-thumb {
+            width: 52px;
+            height: 52px;
+            flex: 0 0 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #f1f5f9, #e2f8f5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid rgba(203, 213, 225, 0.8);
+        }
+
+        .product-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 6px;
+        }
+
+        .product-name {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .product-price {
+            color: #0f766e;
+            font-weight: 800;
+        }
+
+        .qty-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #f8fafc;
+            border: 1px solid rgba(203, 213, 225, 0.9);
+            font-weight: 800;
+            color: var(--checkout-text);
+        }
+
+        .checkout-form-card {
+            background: #fbfeff;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .checkout-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.08), rgba(255, 255, 255, 0.96));
+            border: 1px solid rgba(20, 184, 166, 0.12);
+        }
+
+        .checkout-summary .label {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        .checkout-summary .value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .field-group {
+            margin-bottom: 14px;
+        }
+
+        .field-group label,
+        .payment-group legend {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .checkout-input {
+            width: 100%;
+            border: 1px solid #dbe7e5;
+            border-radius: 12px;
+            padding: 11px 12px;
+            font-size: 0.95rem;
+            outline: none;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .checkout-input:focus {
+            border-color: var(--checkout-accent);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.14);
+        }
+
+        .field-error {
+            margin-top: 6px;
+            font-size: 0.82rem;
+            color: #b91c1c;
+        }
+
+        .payment-group {
+            margin-bottom: 14px;
+        }
+
+        .payment-group legend {
+            margin-bottom: 10px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            background: #fff;
+            margin-bottom: 10px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .payment-option:hover {
+            transform: translateY(-1px);
+            border-color: rgba(20, 184, 166, 0.28);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .payment-option input:checked + span {
+            color: #0f766e;
+            font-weight: 800;
+        }
+
+        .payment-option input {
+            transform: scale(1.05);
+        }
+
+        .subtotal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 18px 0 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(226, 232, 240, 0.9);
+            font-weight: 800;
+            color: var(--checkout-text);
+        }
+
+        .checkout-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 16px;
+            color: #fff;
+            font-size: 0.98rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--checkout-accent), var(--checkout-accent-dark));
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.04);
+        }
+
+        .empty-checkout {
+            text-align: center;
+            padding: 42px 24px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.82);
+        }
+
+        .empty-checkout i {
+            font-size: 52px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .empty-checkout h2 {
+            margin: 0 0 8px;
+            color: var(--checkout-text);
+        }
+
+        .empty-checkout p {
+            margin: 0 0 18px;
+            color: var(--checkout-muted);
+        }
+
+        .empty-checkout a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(135deg, var(--checkout-accent), var(--checkout-accent-dark));
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding-top: 156px;
+            }
+
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-products {
+                border-right: none;
+                border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+            }
+
+            .checkout-form-wrap {
+                position: static;
+                top: auto;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding-top: 166px;
+            }
+
+            .checkout-shell {
+                width: 94vw;
+            }
+
+            .checkout-hero,
+            .checkout-products,
+            .checkout-form-wrap {
+                padding: 18px;
+            }
+
+            .product-table,
+            .product-table thead,
+            .product-table tbody,
+            .product-table tr,
+            .product-table td,
+            .product-table th {
+                display: block;
+                width: 100%;
+            }
+
+            .product-table thead {
+                display: none;
+            }
+
+            .product-table tr {
+                padding: 12px 0;
+            }
+
+            .product-table td {
+                border-top: none;
+                padding: 6px 0;
+            }
+
+            .product-table td:last-child {
+                padding-bottom: 0;
+            }
+
+            .checkout-summary {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
-<body class="bg-white min-h-screen relative overflow-hidden font-sans">
-    <!-- Top teal header with icons -->
-    <header class="bg-[#4dc1c7] flex justify-end items-center gap-6 px-8 py-4 relative z-10">
-        <a href="dashboard.php"><i class="fas fa-home text-black text-xl cursor-pointer"></i></a>
-        <a href="cart.php"><i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i></a>
-        <a href="notifications.php"><i class="fas fa-bell text-black text-xl cursor-pointer"></i></a>
-        <a href="profile.php"><i class="fas fa-user text-black text-xl cursor-pointer"></i></a>
-    </header>
+<body class="bg-white min-h-screen relative font-sans">
+    <div class="dashboard-shell" style="position: fixed; top: 0; left: 0; right: 0; z-index: 20; width: min(1260px, 94vw); margin: 16px auto 0;">
+        <div class="header">
+            <div class="search-bar" aria-label="Search products">
+                <form action="dashboard.php" method="GET" role="search">
+                    <input type="text" name="search" placeholder="Search sustainable products...">
+                    <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="nav-icons">
+                <a href="dashboard.php" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="cart.php" title="Cart" class="active"><i class="fas fa-shopping-cart"></i><span>Cart</span></a>
+                <a href="my_orders.php" title="My Orders"><i class="fas fa-box"></i><span>Orders</span></a>
+                <a href="notifications.php" title="Notifications"><i class="fas fa-bell"></i><span>Notifications</span></a>
+                <a href="profile.php" title="Profile"><i class="fas fa-user"></i><span>Profile</span></a>
+                <a href="../process/logout.php" title="Logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+            </div>
+        </div>
+    </div>
 
     <!-- Decorative circles -->
     <img alt="Decorative teal circle top left" class="absolute top-0 left-0 w-[150px] h-[150px] rounded-full opacity-30 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none" src="https://storage.googleapis.com/a1aa/image/24ea1d2d-4c85-411a-4ffe-b18d3011c45b.jpg"/>
     <img alt="Decorative teal circle bottom right" class="absolute bottom-0 right-0 w-[150px] h-[150px] rounded-full opacity-30 translate-x-1/2 translate-y-1/2 pointer-events-none select-none" src="https://storage.googleapis.com/a1aa/image/877ac420-5079-4edf-d025-70dcf83e6e01.jpg"/>
 
     <!-- Main content container -->
-    <main class="max-w-5xl mx-auto mt-12 bg-white shadow-sm p-8">
+    <main class="checkout-shell">
+        <section class="checkout-hero">
+            <h1>Checkout</h1>
+            <p>Review your order, confirm delivery details, and choose a payment method.</p>
+        </section>
+
         <?php if (!empty($errors)): ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div class="checkout-form-card" style="margin-bottom: 16px; border-color: rgba(239,68,68,0.25); background: #fff5f5;">
                 <?php foreach ($errors as $error): ?>
-                    <p><?php echo htmlspecialchars($error); ?></p>
+                    <p class="field-error" style="margin: 0 0 4px; font-size: 0.9rem;"><?php echo htmlspecialchars($error); ?></p>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
 
-        <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
-            <!-- Products table -->
-            <table class="w-full md:w-auto border-collapse text-sm text-black">
-                <thead>
-                    <tr>
-                        <th class="text-left font-normal pb-4 pr-12">Products</th>
-                        <th class="text-left font-normal pb-4 pr-12">Price</th>
-                        <th class="text-left font-normal pb-4 pr-12">Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($cart_items as $item): ?>
-                        <tr class="align-top">
-                            <td class="pr-12 flex items-center gap-3">
-                                <?php if ($item['image']): ?>
-                                    <img alt="<?php echo htmlspecialchars($item['name']); ?>" 
-                                         class="w-10 h-10 object-contain" 
-                                         src="../uploads/<?php echo htmlspecialchars($item['image']); ?>"/>
-                                <?php else: ?>
-                                    <div class="w-10 h-10 bg-gray-200 flex items-center justify-center">
-                                        <i class="fas fa-image text-gray-400"></i>
-                                    </div>
-                                <?php endif; ?>
-                                <span><?php echo htmlspecialchars($item['name']); ?></span>
-                            </td>
-                            <td class="pr-12">₱<?php echo number_format($item['price'], 2); ?></td>
-                            <td class="pr-12 text-xs text-gray-400 select-none">
-                                <span class="inline-block border-t border-b border-gray-300 px-2 py-0.5 cursor-default">
-                                    <?php echo $item['quantity']; ?>
-                                </span>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <!-- Shipping and payment form -->
-            <form method="POST" class="w-full md:w-[280px] text-xs text-black">
-                <fieldset class="mb-4">
-                    <legend class="font-bold mb-2">Shipping Address</legend>
-                    <div class="mb-2">
-                        <input name="name" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
-                               placeholder="Name" type="text" required
-                               value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"/>
-                        <?php if (!empty($field_errors['name'])): ?>
-                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['name']; ?></p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-2">
-                        <input name="address" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
-                               placeholder="Address" type="text" required
-                               value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?>"/>
-                        <?php if (!empty($field_errors['address'])): ?>
-                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['address']; ?></p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-2">
-                        <input name="phone" class="w-full border border-gray-300 text-xs px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#4dc1c7]" 
-                               placeholder="Phone" type="text" required
-                               value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"/>
-                        <?php if (!empty($field_errors['phone'])): ?>
-                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['phone']; ?></p>
-                        <?php endif; ?>
-                    </div>
-                </fieldset>
-
-                <fieldset class="mb-4">
-                    <legend class="font-bold mb-2">Payment</legend>
-                    <div>
-                        <label class="flex items-center gap-2 mb-1">
-                            <input name="payment" type="radio" value="cod" <?php echo (!isset($_POST['payment']) || $_POST['payment'] === 'cod') ? 'checked' : ''; ?> required/>
-                            <span>Cash on delivery</span>
-                        </label>
-                        <label class="flex items-center gap-2 mb-1">
-                            <input name="payment" type="radio" value="gcash" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'gcash') ? 'checked' : ''; ?> required/>
-                            <span>G cash</span>
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input name="payment" type="radio" value="maya" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'maya') ? 'checked' : ''; ?> required/>
-                            <span>Pay Maya</span>
-                        </label>
-                        <?php if (!empty($field_errors['payment'])): ?>
-                            <p class="text-gray-500 text-xs mt-1"><?php echo $field_errors['payment']; ?></p>
-                        <?php endif; ?>
-                    </div>
-                </fieldset>
-
-                <div class="flex justify-between items-center font-bold text-xs mb-2">
-                    <span>Subtotal</span>
-                    <span>₱<?php echo number_format($subtotal, 2); ?></span>
+        <?php if (empty($cart_items)): ?>
+            <section class="checkout-panel">
+                <div class="empty-checkout">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h2>Your cart is empty</h2>
+                    <p>Add items from the dashboard before checking out.</p>
+                    <a href="dashboard.php">Continue Shopping</a>
                 </div>
+            </section>
+        <?php else: ?>
+            <section class="checkout-panel">
+                <div class="checkout-grid">
+                    <div class="checkout-products">
+                        <h2 class="section-title">Products</h2>
+                        <table class="product-table">
+                            <thead>
+                                <tr>
+                                    <th>Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($cart_items as $item): ?>
+                                    <tr>
+                                        <td>
+                                            <div class="product-item">
+                                                <div class="product-thumb">
+                                                    <?php if ($item['image']): ?>
+                                                        <img alt="<?php echo htmlspecialchars($item['name']); ?>" src="../uploads/<?php echo htmlspecialchars($item['image']); ?>"/>
+                                                    <?php else: ?>
+                                                        <i class="fas fa-image text-gray-400"></i>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <p class="product-name"><?php echo htmlspecialchars($item['name']); ?></p>
+                                            </div>
+                                        </td>
+                                        <td class="product-price">₱<?php echo number_format($item['price'], 2); ?></td>
+                                        <td><span class="qty-pill"><?php echo $item['quantity']; ?></span></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
 
-                <button type="submit" class="bg-[#2563eb] text-white text-xs px-3 py-1 rounded-sm hover:bg-[#1e40af] transition-colors w-full">
-                    Place Order
-                </button>
-            </form>
-        </div>
+                    <div class="checkout-form-wrap">
+                        <h2 class="section-title">Shipping & Payment</h2>
+                        <div class="checkout-form-card">
+                            <form method="POST">
+                                <fieldset class="payment-group">
+                                    <legend>Shipping Address</legend>
+                                    <div class="field-group">
+                                        <input name="name" class="checkout-input" placeholder="Name" type="text" required value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"/>
+                                        <?php if (!empty($field_errors['name'])): ?>
+                                            <p class="field-error"><?php echo $field_errors['name']; ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="field-group">
+                                        <input name="address" class="checkout-input" placeholder="Address" type="text" required value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?>"/>
+                                        <?php if (!empty($field_errors['address'])): ?>
+                                            <p class="field-error"><?php echo $field_errors['address']; ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="field-group">
+                                        <input name="phone" class="checkout-input" placeholder="Phone" type="text" required value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"/>
+                                        <?php if (!empty($field_errors['phone'])): ?>
+                                            <p class="field-error"><?php echo $field_errors['phone']; ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="payment-group">
+                                    <legend>Payment</legend>
+                                    <label class="payment-option">
+                                        <input name="payment" type="radio" value="cod" <?php echo (!isset($_POST['payment']) || $_POST['payment'] === 'cod') ? 'checked' : ''; ?> required/>
+                                        <span><i class="fas fa-truck"></i> Cash on delivery</span>
+                                    </label>
+                                    <label class="payment-option">
+                                        <input name="payment" type="radio" value="gcash" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'gcash') ? 'checked' : ''; ?> required/>
+                                        <span><i class="fas fa-wallet"></i> GCash</span>
+                                    </label>
+                                    <label class="payment-option">
+                                        <input name="payment" type="radio" value="maya" <?php echo (isset($_POST['payment']) && $_POST['payment'] === 'maya') ? 'checked' : ''; ?> required/>
+                                        <span><i class="fas fa-credit-card"></i> PayMaya</span>
+                                    </label>
+                                    <?php if (!empty($field_errors['payment'])): ?>
+                                        <p class="field-error"><?php echo $field_errors['payment']; ?></p>
+                                    <?php endif; ?>
+                                </fieldset>
+
+                                <div class="checkout-summary">
+                                    <span class="label">Subtotal</span>
+                                    <span class="value">₱<?php echo number_format($subtotal, 2); ?></span>
+                                </div>
+
+                                <div class="checkout-actions">
+                                    <button type="submit" class="checkout-btn"><i class="fas fa-lock"></i> Place Order</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <?php endif; ?>
     </main>
 </body>
 </html>

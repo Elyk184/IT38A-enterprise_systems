@@ -16,6 +16,9 @@ if (!isset($_POST['product_id'])) {
 }
 
 $product_id = $_POST['product_id'];
+$quantity = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
+$quantity = max(1, $quantity);
+$buy_now = isset($_POST['buy_now']) && $_POST['buy_now'] === '1';
 
 try {
     // Get product details
@@ -35,16 +38,22 @@ try {
 
     // Add product to cart
     if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id]['quantity']++;
+        $_SESSION['cart'][$product_id]['quantity'] += $quantity;
     } else {
         $_SESSION['cart'][$product_id] = array(
             'name' => $product['name'],
             'price' => $product['price'],
-            'quantity' => 1
+            'image' => $product['image'],
+            'quantity' => $quantity
         );
     }
 
     $_SESSION['success'] = "Product added to cart successfully!";
+
+    if ($buy_now) {
+        header("Location: ../pages/checkout.php");
+        exit();
+    }
 } catch (Exception $e) {
     $_SESSION['error'] = "Error: " . $e->getMessage();
 }

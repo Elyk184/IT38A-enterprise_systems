@@ -10,6 +10,30 @@ if (!isset($_SESSION['user_id'])) {
 
 // Initialize total
 $total = 0;
+$cart_items = [];
+
+if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    try {
+        $product_ids = array_keys($_SESSION['cart']);
+        $placeholders = implode(',', array_fill(0, count($product_ids), '?'));
+        $stmt = $conn->prepare("SELECT id, image FROM products WHERE id IN ($placeholders)");
+        $stmt->execute($product_ids);
+        $product_images = [];
+
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $product) {
+            $product_images[$product['id']] = $product['image'];
+        }
+
+        foreach ($_SESSION['cart'] as $product_id => $item) {
+            $cart_items[$product_id] = $item;
+            if (empty($cart_items[$product_id]['image']) && isset($product_images[$product_id])) {
+                $cart_items[$product_id]['image'] = $product_images[$product_id];
+            }
+        }
+    } catch (PDOException $e) {
+        $cart_items = $_SESSION['cart'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,23 +48,25 @@ $total = 0;
 <body>
 
 <div class="header">
-    <div class="search-bar">
-        <form action="dashboard.php" method="GET">
-            <input type="text" name="search" placeholder="Search products...">
-            <button type="submit"><i class="fas fa-search"></i></button>
+    <div class="search-bar" aria-label="Search products">
+        <form action="dashboard.php" method="GET" role="search">
+            <input type="text" name="search" placeholder="Search sustainable products...">
+            <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
         </form>
     </div>
     <div class="nav-icons">
-        <a href="dashboard.php"><i class="fas fa-home"></i></a>
-        <a href="cart.php"><i class="fas fa-shopping-cart"></i></a>
-        <a href="notifications.php"><i class="fas fa-bell"></i></a>
-        <a href="profile.php"><i class="fas fa-user"></i></a>
-        <a href="../process/logout.php"><i class="fas fa-sign-out-alt"></i></a>
+        <a href="dashboard.php" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="cart.php" title="Cart" class="active"><i class="fas fa-shopping-cart"></i><span>Cart</span></a>
+        <a href="my_orders.php" title="My Orders"><i class="fas fa-box"></i><span>Orders</span></a>
+        <a href="notifications.php" title="Notifications"><i class="fas fa-bell"></i><span>Notifications</span></a>
+        <a href="profile.php" title="Profile"><i class="fas fa-user"></i><span>Profile</span></a>
+        <a href="../process/logout.php" title="Logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
     </div>
 </div>
 
 <div class="welcome-message">
-    Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?>!
+    <h1>Shopping Cart</h1>
+    <p>Review your selected items, adjust quantities, and proceed when ready.</p>
 </div>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -62,18 +88,26 @@ $total = 0;
 <?php endif; ?>
 
 <div class="cart-container">
-    <h2>Shopping Cart</h2>
-    
     <?php if (empty($_SESSION['cart'])): ?>
         <div class="empty-cart">
             <i class="fas fa-shopping-cart"></i>
-            <p>Your cart is empty</p>
+            <h2>Your cart is empty</h2>
+            <p>Add products from the dashboard to begin building your order.</p>
             <a href="dashboard.php" class="continue-shopping">Continue Shopping</a>
         </div>
     <?php else: ?>
         <div class="cart-items">
-            <?php foreach ($_SESSION['cart'] as $product_id => $item): ?>
+            <?php foreach ($cart_items as $product_id => $item): ?>
                 <div class="cart-item">
+                    <div class="item-image">
+                        <?php if (!empty($item['image'])): ?>
+                            <img src="../uploads/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                        <?php else: ?>
+                            <div class="image-placeholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     <div class="item-details">
                         <h3><?php echo htmlspecialchars($item['name']); ?></h3>
                         <p class="price">₱<?php echo number_format($item['price'], 2); ?></p>
@@ -87,6 +121,7 @@ $total = 0;
                         </form>
                     </div>
                     <div class="item-total">
+                        <span>Item total</span>
                         ₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?>
                     </div>
                     <form action="../process/remove_from_cart.php" method="POST" class="remove-form">
