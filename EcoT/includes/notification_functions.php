@@ -52,4 +52,49 @@ function getUnreadNotificationCount($user_id) {
         return 0;
     }
 }
-?> 
+
+function createAdminNotification($message, $type = 'system', $order_id = null) {
+    global $conn;
+    try {
+        // Get all admin user IDs
+        $stmt = $conn->prepare("SELECT id FROM users WHERE role = 'admin'");
+        $stmt->execute();
+        $admin_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        if (empty($admin_ids)) {
+            error_log("No admin users found for notification");
+            return false;
+        }
+        
+        $success = true;
+        foreach ($admin_ids as $admin_id) {
+            $result = createNotification($admin_id, $message, $type, $order_id);
+            $success = $success && $result;
+        }
+        return $success;
+    } catch (PDOException $e) {
+        error_log("Error creating admin notification: " . $e->getMessage());
+        return false;
+    }
+}
+
+function getAdminUnreadNotificationCount() {
+    global $conn;
+    if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+        return 0;
+    }
+    try {
+        $stmt = $conn->prepare("
+            SELECT COUNT(*) 
+            FROM notifications 
+            WHERE user_id = :user_id AND is_read = FALSE
+        ");
+        $stmt->bindParam(':user_id', $_SESSION['user_id']);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        error_log("Error getting admin unread notification count: " . $e->getMessage());
+        return 0;
+    }
+}
+?>

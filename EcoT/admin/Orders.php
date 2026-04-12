@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../config/db.php';
+require_once '../includes/notification_functions.php';
 
 // Check if user is logged in and is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
@@ -11,10 +12,20 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // Handle status update
 if (isset($_POST['update_status'])) {
     try {
+        $new_status = $_POST['status'];
+        $order_id = $_POST['order_id'];
+        
         $stmt = $conn->prepare("UPDATE orders SET status = :status WHERE id = :id");
-        $stmt->bindParam(':status', $_POST['status']);
-        $stmt->bindParam(':id', $_POST['order_id']);
+        $stmt->bindParam(':status', $new_status);
+        $stmt->bindParam(':id', $order_id);
         $stmt->execute();
+        
+        // Notify admin if order was cancelled
+        if ($new_status === 'cancelled') {
+            $admin_message = "Order #$order_id has been cancelled.";
+            createAdminNotification($admin_message, 'cancelled_order', $order_id);
+        }
+        
         $_SESSION['success'] = "Order status updated successfully.";
     } catch (PDOException $e) {
         $_SESSION['error'] = "Error updating order status: " . $e->getMessage();

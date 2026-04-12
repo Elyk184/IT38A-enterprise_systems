@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once '../config/db.php';
+require_once '../includes/notification_functions.php';
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header("Location: ../pages/login.php");
@@ -13,6 +14,8 @@ $total_products = 0;
 $total_orders = 0;
 $total_users = 0;
 $recent_orders = [];
+$admin_unread_count = 0;
+$recent_admin_notifications = [];
 
 try {
     $total_products = (int)$conn->query("SELECT COUNT(*) FROM products")->fetchColumn();
@@ -27,8 +30,24 @@ try {
         LIMIT 5
     ");
     $recent_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get admin unread count and recent notifications
+    $admin_unread_count = getAdminUnreadNotificationCount();
+    
+    $stmt = $conn->prepare("
+        SELECT n.id, n.message, n.type, n.created_at, n.order_id, n.is_read
+        FROM notifications n
+        JOIN users u ON n.user_id = u.id
+        WHERE u.role = 'admin' AND n.user_id = :user_id
+        ORDER BY n.created_at DESC
+        LIMIT 5
+    ");
+    $stmt->bindParam(':user_id', $_SESSION['user_id']);
+    $stmt->execute();
+    $recent_admin_notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
 } catch (PDOException $e) {
-    $_SESSION['error'] = "Error fetching dashboard data.";
+    $_SESSION['error'] = "Error fetching dashboard data: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -50,6 +69,8 @@ try {
             --primary-dark: #0f766e;
             --accent: #2dd4bf;
             --shadow: 0 14px 34px rgba(15, 23, 42, .08);
+            --notification-badge: #ef4444;
+            --notification-bg: #fef2f2;
         }
 
         body {
@@ -105,6 +126,7 @@ try {
             border-radius: 22px;
             padding: 24px;
             margin-bottom: 22px;
+            position: relative;
         }
 
         .welcome-card h2 {
@@ -112,6 +134,23 @@ try {
             font-size: 1.35rem;
             font-weight: 800;
             color: #111827;
+        }
+
+        .notification-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            background: var(--notification-badge);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
         }
 
         .stats-grid {
@@ -165,12 +204,16 @@ try {
         .panel {
             border-radius: 22px;
             padding: 22px;
+            margin-bottom: 22px;
         }
 
         .panel-header {
             margin-bottom: 18px;
             padding-bottom: 10px;
             border-bottom: 1px solid rgba(15, 118, 110, .08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .panel-header h2 {
@@ -178,6 +221,17 @@ try {
             font-size: 1.2rem;
             font-weight: 800;
             color: #0f172a;
+        }
+
+        .view-all-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .view-all-link:hover {
+            text-decoration: underline;
         }
 
         .alert {
@@ -199,7 +253,7 @@ try {
             border: 1px solid #fecaca;
         }
 
-        .orders-table {
+        .orders-table, .notifications-table {
             overflow-x: auto;
         }
 
@@ -242,6 +296,16 @@ try {
         .status-badge.shipped { background: #ecfeff; color: #0e7490; }
         .status-badge.completed { background: #ecfdf5; color: #047857; }
         .status-badge.cancelled { background: #fef2f2; color: #b91c1c; }
+
+        .notification-type {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            background: var(--notification-bg);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
 
         .view-btn {
             display: inline-flex;
@@ -290,7 +354,11 @@ try {
             <?php endif; ?>
 
             <div class="welcome-card">
-                <h2>Welcome back, Admin</h2>
+                <h2>Welcome back, Admin
+                    <?php if ($admin_unread_count > 0): ?>
+                        <span class="notification-badge"><?php echo $admin_unread_count; ?></span>
+                    <?php endif; ?>
+                </h2>
                 <p>Manage products, orders, users, and reports from one place.</p>
             </div>
 
@@ -318,6 +386,48 @@ try {
                         <p><?php echo $total_users; ?></p>
                     </div>
                 </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recent Notifications</h2>
+                    <a href="notifications.php" class="view-all-link">View All →</a>
+                </div>
+
+                <?php if (empty($recent_admin_notifications)): ?>
+                    <p class="no-data">No recent notifications.</p>
+                <?php else: ?>
+                    <div class="notifications-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Message</th>
+                                    <th>Type</th>
+                                    <th>Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($recent_admin_notifications as $notif): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars(substr($notif['message'], 0, 50)) . (strlen($notif['message']) > 50 ? '...' : ''); ?></td>
+                                        <td><span class="notification-type"><?php echo ucfirst($notif['type']); ?></span></td>
+                                        <td><?php echo date('M d, H:i', strtotime($notif['created_at'])); ?></td>
+                                        <td>
+                                            <?php if ($notif['order_id']): ?>
+                                                <a href="Orders.php?view=<?php echo $notif['order_id']; ?>" class="view-btn">
+                                                    <i class="fas fa-eye"></i> View Order
+                                                </a>
+                                            <?php else: ?>
+                                                <span>-</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="panel">

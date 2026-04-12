@@ -56,13 +56,19 @@ try {
         $stmt->execute([$item['quantity'], $product_id]);
     }
 
-    // Create notification for order placement
+    // Create notification for order placement (user)
     $message = "Your order #" . $order_id . " has been placed successfully!\n\n";
     $message .= "Total Amount: ₱" . number_format($total_amount, 2) . "\n";
     $message .= "Status: Pending\n\n";
     $message .= "You can track your order status in the Orders section.";
     
     createNotification($_SESSION['user_id'], $order_id, $message, 'order_placed');
+
+    // Create admin notification for new order
+    $admin_message = "New order #$order_id placed by " . ($user['name'] ?? 'Customer #' . $_SESSION['user_id']) . "!\n";
+    $admin_message .= "Total: ₱" . number_format($total_amount, 2) . "\n";
+    $admin_message .= "View: admin/Orders.php?view=$order_id";
+    createAdminNotification($admin_message, 'new_order', $order_id);
 
     // Clear cart
     unset($_SESSION['cart']);
@@ -78,4 +84,4 @@ try {
     header("Location: ../pages/cart.php");
     exit();
 }
-?> 
+?>

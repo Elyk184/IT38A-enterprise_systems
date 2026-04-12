@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once '../includes/notification_functions.php';
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../pages/login.php");
@@ -11,6 +12,8 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role
 $currentFile = strtolower(basename($_SERVER['SCRIPT_NAME']));
 $adminBase   = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
 $appBase     = rtrim(dirname($adminBase), '/\\');
+
+$admin_unread_count = getAdminUnreadNotificationCount();
 
 if (!function_exists('isActiveAny')) {
     function isActiveAny(array $files, string $currentFile): string {
@@ -31,6 +34,7 @@ if (!function_exists('isActiveAny')) {
     --sb-icon-bg: rgba(45, 212, 191, .14);
     --sb-icon-color: #0f766e;
     --sb-shadow: 0 12px 30px rgba(15, 118, 110, .10);
+    --notification-badge: #ef4444;
 }
 
 .ecot-sidebar{
@@ -144,6 +148,24 @@ if (!function_exists('isActiveAny')) {
     color: #ffffff;
 }
 
+.sidebar-notification-badge {
+    background: var(--notification-badge);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+}
+
 .ecot-sidebar .logout-link{
     margin-top: 8px;
 }
@@ -192,6 +214,15 @@ if (!function_exists('isActiveAny')) {
     .ecot-sidebar a.active::before{
         top: 8px;
         bottom: 8px;
+    }
+
+    .sidebar-notification-badge {
+        position: absolute;
+        right: -6px;
+        top: 8px;
+        font-size: 0.65rem;
+        min-width: 16px;
+        height: 16px;
     }
 
     .main-content,
@@ -247,6 +278,18 @@ if (!function_exists('isActiveAny')) {
                    class="<?php echo isActiveAny(['reports.php'], $currentFile); ?>">
                     <i class="fas fa-chart-column"></i>
                     <span>Reports</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="<?php echo htmlspecialchars($adminBase . '/notifications.php'); ?>"
+                   class="<?php echo isActiveAny(['notifications.php'], $currentFile); ?>"
+                   <?php if ($admin_unread_count > 0): ?>title="<?php echo $admin_unread_count; ?> unread notifications"<?php endif; ?>>
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <?php if ($admin_unread_count > 0): ?>
+                        <span class="sidebar-notification-badge"><?php echo $admin_unread_count > 99 ? '99+' : $admin_unread_count; ?></span>
+                    <?php endif; ?>
                 </a>
             </li>
 
